@@ -40,7 +40,45 @@ public class Calculate {
 		return -b*b - 4*a*c;
 	}
 
+	// returns an equivalent improper fraction given mixed fraction
 	public static String toImproperFrac(int co, int num, int den) {
 		return den*co+num + "/" + den;
+	}
+
+	// returns an equivalent mixed fraction given improper fracion
+	public static String toMixedNum(int num, int den) {
+		return num/den + "_" + num%den + "/" + den;
+	}
+
+	// returns a tri-nomial given a fully factored single variable expression
+	public static String foil(int a, int b, int c, int d, String var) {
+		String firstTerm  = a * c + var + "^2 + ";
+		String secondTerm = a*d + c*b + var;
+		String thirdTerm  = " + " + b*d;
+
+		return firstTerm + secondTerm + thirdTerm;
+	}
+
+	// Returns a boolean to verify if one integer is divisible by the other
+	public static boolean isDivisibleBy(int a, int b) {
+		return a % b == 0;
+	}
+
+	// Returns the absValue of the input
+	public static double absValue(double number) {
+		if (number < 0.0) return 0.0 - number;
+		return number;
+	}
+
+	// Returns the larger value of two doubles
+	public static double max(double a, double b) {
+		return a >= b ? a : b;
+	}
+
+	// Returns the larger value of three doubles
+	public static double max(double a, double b, double c) {
+		if (a >= b && b >= c) return a;
+		if (b >= a && a >= c) return b;
+		return c;
 	}
 }
