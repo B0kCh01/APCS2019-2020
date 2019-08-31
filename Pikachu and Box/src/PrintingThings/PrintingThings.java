@@ -2,6 +2,8 @@
 // August - 2019
 // PrintingThings.java -> Printing various symbols and drawings
 
+package PrintingThings;
+
 public class PrintingThings {
 	// Method to print Pikachu Ascii Art
 	public static void printPika() {
@@ -30,3 +32,4 @@ public class PrintingThings {
 		printBoxes();
 	}
 }
+
