@@ -8,6 +8,5 @@ import CalculateLibrary.Calculate;
 public class DoMath {
     public static void main(String[] args) {
     	System.out.println(Calculate.max(5, 5, 2));
-    	double status = True;
     }
 }
