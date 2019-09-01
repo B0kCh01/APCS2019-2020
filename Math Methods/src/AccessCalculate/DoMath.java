@@ -4,9 +4,14 @@
 // DoMath.java --> Call the Calculate class
 package AccessCalculate;
 import CalculateLibrary.Calculate;
+import java.util.Scanner;
 
 public class DoMath {
     public static void main(String[] args) {
-    	System.out.println(Calculate.max(5, 5, 2));
+    	Scanner sc = new Scanner(System.in);
+    	System.out.print("Enter number: ");
+    	double num = sc.nextDouble();
+    	System.out.print("Raw number: " + num + "\nRounded number: ");
+    	System.out.println(Calculate.round2(num));
     }
 }

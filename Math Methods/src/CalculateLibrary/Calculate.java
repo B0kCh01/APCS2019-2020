@@ -83,13 +83,16 @@ public class Calculate {
 	}
 
 	// Returns the smaller value of two doubles
-	public static double max(double a, double b) {
+	public static double min(double a, double b) {
 		return a <= b ? a : b;
 	}
 
 	// Returns the input rounded to the nearest 2 decimal points
 	public static double round2(double number) {
-		
+		int last_digit = (int) (number*1000) % 10;
+		double rounded = (int) (number*100)  / 100.0;
+
+		return last_digit > 4 ? rounded + 0.01 : rounded;
 	}
 
 }
