@@ -106,4 +106,8 @@ public class Calculate {
 		return number;
 	}
 
+	public static double factorial(double number) {
+		return 0.0;
+	}
+
 }
