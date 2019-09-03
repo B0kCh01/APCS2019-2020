@@ -95,4 +95,14 @@ public class Calculate {
 		return last_digit > 4 ? rounded + 0.01 : rounded;
 	}
 
+	// Returns the input to the power of a positive integer
+	public static double exponent(double number, double power) {
+		int iteration = 0;
+		while(iteration < power){
+			number *= number;
+			iteration++;
+		}
+		return number;
+	}
+
 }
