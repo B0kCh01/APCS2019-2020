@@ -97,9 +97,10 @@ public class Calculate {
 
 	// Returns the input to the power of a positive integer
 	public static double exponent(double number, double power) {
-		int iteration = 0;
+		int iteration = 1;
+		double base = number;
 		while(iteration < power){
-			number *= number;
+			number *= base;
 			iteration++;
 		}
 		return number;
