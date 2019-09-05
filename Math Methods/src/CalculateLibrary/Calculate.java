@@ -106,8 +106,26 @@ public class Calculate {
 		return number;
 	}
 
-	public static double factorial(double number) {
-		return 0.0;
+	// Returns the factorial of the input number
+	public static int factorial(int number) {
+		int factorial = number;
+		for (int iteration = factorial - 1; iteration >= 1; iteration--) {
+			factorial *= iteration;
+		}
+
+		return factorial;
 	}
+
+	// Returns a boolean which True means the input is a prime number
+	public static boolean isPrime(int number) {
+		for (int iteration = 2; 
+			isDivisibleBy(number, iteration) && iteration != number; 
+			iteration++) {
+			return false;
+		}
+		return true;
+	}
+
+
 
 }
