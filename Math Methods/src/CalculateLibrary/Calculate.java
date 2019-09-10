@@ -109,6 +109,10 @@ public class Calculate {
 
 	// Returns the input to the power of a positive integer
 	public static double exponent(double number, double power) {
+		if (power < 0)
+			throw new IllegalArgumentException("Currently does not support a power less than 0.");
+		if (number == 0 && power == 0)
+			throw new IllegalArgumentException("Cannot compute the power of 0 to 0.");
 		int iteration = 1;
 		double base = number;
 		while(iteration < power){
@@ -120,12 +124,13 @@ public class Calculate {
 
 	// Returns the factorial of the input number
 	public static int factorial(int number) {
-		int factorial = number;
-		for (int iteration = factorial - 1; iteration >= 1; iteration--) {
-			factorial *= iteration;
+		if (number < 0)
+			throw new IllegalArgumentException("Hey! You can't compute the factoral of a negative number.");
+		for (int iteration = number - 1; iteration >= 1; iteration--) {
+			number *= iteration;
 		}
 
-		return factorial;
+		return number;
 	}
 
 	// Returns a boolean which True means the input is a prime number
@@ -147,22 +152,13 @@ public class Calculate {
 	}
 
 	// Returns the estimated square root of an input type double
-	public static String sqrt(double number) {
-		// I thought solving it this way was cool
-		// Hyperparameters
-		double prediction = number;
-		double learning_rate = 0.0001;
-		double cost = 1;
-		int epochs = 1;
-
-		// Training Loop
+	public static double sqrt(double number) {
+		double root = number / 2;
 		do {
-			cost = absValue(number - square(0.5*(number/prediction + prediction)));
-			prediction -= 2*learning_rate*prediction;
-			if (epochs % 1 == 0)
-				System.out.println(epochs + " - cost: " + cost + " | prediction: " + prediction);
-			epochs++;
-		} while (absValue(number - square(prediction)) > 0.004);
-		return "The final cost: " + cost + "\nIt took " + epochs + " iterations.\nThe square root of " + number + " is " + prediction;
+			root = 0.5*(number/root + root);
+		} while (absValue(number - square(root)) > 0.025);
+		return round2(root);
 	}
+
+	// Returns the 
 }

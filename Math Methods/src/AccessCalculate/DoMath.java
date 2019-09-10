@@ -8,6 +8,6 @@ import java.util.Scanner;
 
 public class DoMath {
     public static void main(String[] args) {
-    	System.out.println(Calculate.sqrt(9));
+    	System.out.println(Calculate.exponent(0, 0));
     }
 }
