@@ -8,6 +8,6 @@ import java.util.Scanner;
 
 public class DoMath {
     public static void main(String[] args) {
-    	System.out.println(Calculate.isPrime(1229));
+    	System.out.println(Calculate.sqrt(9));
     }
 }

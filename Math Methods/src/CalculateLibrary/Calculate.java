@@ -8,6 +8,11 @@ public class Calculate {
 		return number*number;
 	}
 
+	// returns the input to the power of 2
+	public static double square(double number) {
+		return number*number;
+	}
+
 	// returns the input to the power of 3
 	public static int cube(int number) {
 		return number*number*number;
@@ -75,6 +80,11 @@ public class Calculate {
 		return a >= b ? a : b;
 	}
 
+	// Returns the larger value of two integers
+	public static int max(int a, int b) {
+		return a >= b ? a : b;
+	}
+
 	// Returns the larger value of three doubles
 	public static double max(double a, double b, double c) {
 		if (a >= b && b >= c) return a;
@@ -87,12 +97,14 @@ public class Calculate {
 		return a <= b ? a : b;
 	}
 
+	// Returns the smaller value of two integers
+	public static int min(int a, int b) {
+		return a <= b ? a : b;
+	}
+
 	// Returns the input rounded to the nearest 2 decimal points
 	public static double round2(double number) {
-		int last_digit = (int) (number*1000) % 10;
-		double rounded = (int) (number*100)  / 100.0;
-
-		return last_digit > 4 ? rounded + 0.01 : rounded;
+		return ((int) (number * 100 + 0.5))/100;
 	}
 
 	// Returns the input to the power of a positive integer
@@ -124,6 +136,33 @@ public class Calculate {
 		return true;
 	}
 
+	// Returns the greatest common factor of the input
+	public static int gcf(int a, int b) {
+		int maxFactor = min(a, b);
 
+		for (int gcf = maxFactor; gcf > 1; gcf--)
+			if (a % gcf == 0 && b % gcf == 0)
+				return gcf;
+		return 1;
+	}
 
+	// Returns the estimated square root of an input type double
+	public static String sqrt(double number) {
+		// I thought solving it this way was cool
+		// Hyperparameters
+		double prediction = number;
+		double learning_rate = 0.0001;
+		double cost = 1;
+		int epochs = 1;
+
+		// Training Loop
+		do {
+			cost = absValue(number - square(0.5*(number/prediction + prediction)));
+			prediction -= 2*learning_rate*prediction;
+			if (epochs % 1 == 0)
+				System.out.println(epochs + " - cost: " + cost + " | prediction: " + prediction);
+			epochs++;
+		} while (absValue(number - square(prediction)) > 0.004);
+		return "The final cost: " + cost + "\nIt took " + epochs + " iterations.\nThe square root of " + number + " is " + prediction;
+	}
 }
