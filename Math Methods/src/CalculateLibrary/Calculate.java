@@ -118,11 +118,9 @@ public class Calculate {
 
 	// Returns a boolean which True means the input is a prime number
 	public static boolean isPrime(int number) {
-		for (int iteration = 2; 
-			isDivisibleBy(number, iteration) && iteration != number; 
-			iteration++) {
-			return false;
-		}
+		for (int iteration = 2; iteration < number; iteration++)
+			if (isDivisibleBy(number, iteration) && iteration != number)
+				return false;
 		return true;
 	}
 

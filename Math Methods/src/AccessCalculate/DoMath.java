@@ -8,6 +8,6 @@ import java.util.Scanner;
 
 public class DoMath {
     public static void main(String[] args) {
-    	System.out.println(Calculate.isPrime(4));
+    	System.out.println(Calculate.isPrime(1229));
     }
 }
