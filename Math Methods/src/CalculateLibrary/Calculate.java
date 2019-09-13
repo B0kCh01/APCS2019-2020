@@ -1,7 +1,7 @@
 package CalculateLibrary;
 
 public class Calculate {
-	public double pi = 3.14159;
+	public final double pi = 3.14159;
 
 	// returns the input to the power of 2
 	public static int square(int number) {
@@ -15,6 +15,11 @@ public class Calculate {
 
 	// returns the input to the power of 3
 	public static int cube(int number) {
+		return number*number*number;
+	}
+
+	// returns the input to the power of 3
+	public static double cube(double number) {
 		return number*number*number;
 	}
 
@@ -47,26 +52,80 @@ public class Calculate {
 
 	// returns an equivalent improper fraction given mixed fraction
 	public static String toImproperFrac(int co, int num, int den) {
-		return den*co+num + "/" + den;
+		// If co is 0, the number is 0 of course
+		if (co  == 0) return 0 + "";
+		// If numerator is 0, return co
+		if (num == 0) return co + "";
+		// If denomenator is 0, throw an error
+		if (den < 1 || num < 0) throw new IllegalArgumentException
+			("The denomenator has to be greater than 0 and the numerator positve.");
+
+		return (co > 0 ? "-" : "") + absValue(den*co)+num + "/" + den;
 	}
 
 	// returns an equivalent mixed fraction given improper fracion
 	public static String toMixedNum(int num, int den) {
-		return num/den + "_" + num%den + "/" + den;
+		if (num == 0) return 0 + "";
+		if (den == 0) throw new IllegalArgumentException
+			("The denominator cannot be 0!");
+
+		boolean negative = num * den < 0;
+		return (negative? "-" : "") + (num/den > 0 ? num/den + "_": "") + num%den + "/" + den;
 	}
 
 	// returns a tri-nomial given a fully factored single variable expression
 	public static String foil(int a, int b, int c, int d, String var) {
-		String firstTerm  = a * c + var + "^2 + ";
-		String secondTerm = a*d + c*b + var;
-		String thirdTerm  = " + " + b*d;
+		// Initialize new variables
+		String term1_str = "";
+		String term2_str = "";
+		String term3_str = "";
+		int term1_int = a*c;
+		int term2_int = a*d + c*b;
+		int term3_int = b*d;
 
-		return firstTerm + secondTerm + thirdTerm;
+		// Calculation of terms (if zero, don't add anything)
+		if (term1_int != 0) {
+			if (term1_int < 0 ) {
+				if (term1_int != -1)
+					term1_str += term1_int;
+				term1_str += "-";
+			}
+			term1_str += var + "^2";
+		}
+		if (term2_int != 0) {
+			if (term2_int < 0)
+				term2_str += term1_str.equals("")? " -" : " - "; 
+			else
+				term2_str += term1_str.equals("")? "" : " + ";
+			term2_int = absValue(term2_int);
+			term2_str += term2_int == 1 ? var : term2_int + var;
+		}
+
+		if (b * d != 0) {
+			if (term3_int < 0)
+				term3_str += (term1_str + term2_str).equals("")?
+					" -" : " - ";
+			else
+				term3_str += (term1_str + term2_str).equals("")?
+					"" : " + ";
+			term3_str += absValue(term3_int);
+		}
+		
+		
+		// Return result. If returns nothing, return "0"
+		String result = term1_str + term2_str + term3_str;
+		return result.equals("") ? "0" : result;
 	}
 
 	// Returns a boolean to verify if one integer is divisible by the other
 	public static boolean isDivisibleBy(int a, int b) {
 		return a % b == 0;
+	}
+
+	// Returns the absValue of the input
+	public static int absValue(int number) {
+		if (number < 0) return 0 - number;
+		return number;
 	}
 
 	// Returns the absValue of the input
@@ -156,9 +215,7 @@ public class Calculate {
 		double root = number / 2;
 		do {
 			root = 0.5*(number/root + root);
-		} while (absValue(number - square(root)) > 0.025);
+		} while (absValue(number - square(root)) > 0.25);
 		return round2(root);
 	}
-
-	// Returns the 
 }
