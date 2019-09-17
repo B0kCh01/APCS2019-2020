@@ -3,7 +3,7 @@
 // August 2019
 // APCS3
 // DoMath.java --> Call the Calculate class
-
+import CalculateLibrary.Calculate;
 import java.util.Scanner;
 
 public class DoMath {

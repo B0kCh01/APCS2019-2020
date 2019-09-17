@@ -1,3 +1,5 @@
+package CalculateLibrary;
+
 public class Calculate {
 	public final double pi = 3.14159;
 
