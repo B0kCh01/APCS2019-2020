@@ -47,7 +47,7 @@ public class Calculate {
 
 	// returns the discriminant
 	public static double discriminant(double a, double b, double c) {
-		return -b * b - 4 * a * c;
+		return b*b - 4*a*c;
 	}
 
 	// returns an equivalent improper fraction given mixed fraction
@@ -167,7 +167,13 @@ public class Calculate {
 
 	// Returns the input rounded to the nearest 2 decimal points
 	public static double round2(double number) {
-		return ((int) (number * 100 + 0.5)) / 100;
+		double output = 0;
+		if (number < 0)
+			output = ((int) (number * 100 - 0.5)) / 100;
+		else
+			output = ((int) (number * 100 + 0.5)) / 100;
+		return output;
+
 	}
 
 	// Returns the input to the power of a positive integer
@@ -187,6 +193,8 @@ public class Calculate {
 
 	// Returns the factorial of the input number
 	public static int factorial(int number) {
+		if (number == 0)
+			return 1;
 		if (number < 0)
 			throw new IllegalArgumentException("Hey! You can't compute the factoral of a negative number.");
 		for (int iteration = number - 1; iteration >= 1; iteration--) {
@@ -216,10 +224,28 @@ public class Calculate {
 
 	// Returns the estimated square root of an input type double
 	public static double sqrt(double number) {
+		if (number < 0)
+			throw  new IllegalArgumentException(number + " - cannot find square root of a negative number");
+
 		double root = number / 2;
 		do {
 			root = 0.5 * (number / root + root);
 		} while (absValue(number - square(root)) > 0.25);
 		return round2(root);
+	}
+
+
+	public static String quadForm(int a, int b, int c) {
+		if (discriminant(a, b, c) < 0)
+			return "no real roots";
+
+		String output = "";
+		double root1 = round2((-b + sqrt(discriminant(a, b, c)))/(2*a));
+		double root2 = round2((-b - sqrt(discriminant(a, b, c)))/(2*a));
+
+		if (root1 == root2)
+			return "" + root1;
+		else
+			return min(root1, root2) + " and " + max(root1, root2);
 	}
 }
