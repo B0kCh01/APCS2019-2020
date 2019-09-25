@@ -1,6 +1,7 @@
 package Client;
 
 import Methods.*;
+
 import java.util.Scanner;
 
 public class QuadraticClient {
