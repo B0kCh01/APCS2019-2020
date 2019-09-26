@@ -1,3 +1,8 @@
+// Nathan Choi
+// September 24, 2019
+// APCS 3rd
+// QuadraticClient.java -> Uses the Quadratic Class File
+
 package Client;
 
 import Methods.*;
