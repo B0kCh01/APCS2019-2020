@@ -5,22 +5,39 @@
 // DoMath.java --> Call the Calculate class
 package CalculatorTest;
 
-import CalculateLibrary.Calculate;
-import java.util.Scanner;
+import CalculateLibrary.Calculate.*;
+
+import static CalculateLibrary.Calculate.*;
 
 public class DoMath {
     public static void main(String[] args) {
-        // System.out.println(Calculate.square(12.1));
-        // System.out.println(Calculate.cube(3.1));
-        // System.out.println(Calculate.average(3, 2));
-        // System.out.println(Calculate.average(5, 5, 4));
-        // System.out.println(Calculate.toDegrees(1.512));
-        // System.out.println(Calculate.toRadians(Calculate.toDegrees(1.512)));
-        //System.out.println(Calculate.discriminant(2, -1, 2));
-        // System.out.println(Calculate.toImproperFrac(1, 3, 8));
-        // System.out.println(Calculate.toMixedNum(9, -7));
-        // System.out.println(Calculate.foil(-1, 3, -9, -3, "x"));
-        // System.out.println(Calculate.factorial(0));
-        System.out.println(Calculate.quadForm(1, 7, 6));
+         testFor(square(5), 25);
+         testFor(cube(4),  64);
+         testFor(average(10, 34.5, -634), (10+34.5-634)/3);
+         testFor(discriminant(3, 5, 2), 1);
+         testFor(isDivisibleBy(34, 17), true);
+         testFor(round2(23.35734), 23.36);
+         testFor(exponent(23, 2), 529);
+         testFor(exponent(4536.54, 0), 1);
+         testFor(factorial(7), 5040);
+         testFor(isPrime(13459), false);
+         testFor(gcf(5544564,4657455), 3);
+         testFor(sqrt(9), 3);
+    }
+
+    public static void testFor(double a, double b){
+        if (a != b) throw new ArithmeticException("Oops");
+    }
+
+    public static void testFor(double a, int b) {
+        if (a != b + 0.0) throw new ArithmeticException("Oops");
+    }
+
+    public static void testFor(boolean a, boolean b) {
+        if (a != b) throw new ArithmeticException("Oops");
+    }
+
+    public static void testFor(String a, String b){
+        if (!a.equals(b)) throw new ArithmeticException("RIpp,");
     }
 }

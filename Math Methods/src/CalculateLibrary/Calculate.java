@@ -25,12 +25,12 @@ public class Calculate {
 
 	// returns the average of two doubles
 	public static double average(double one, double two) {
-		return (one + two) / 2;
+		return (one + two) / 2.0;
 	}
 
 	// returns the average of three doubles
 	public static double average(double one, double two, double three) {
-		return (one + two + three) / 3;
+		return (one + two + three) / 3.0;
 	}
 
 	// returns the equivalent degrees given radians
@@ -119,6 +119,7 @@ public class Calculate {
 
 	// Returns a boolean to verify if one integer is divisible by the other
 	public static boolean isDivisibleBy(int a, int b) {
+		if (b == 0) throw new IllegalArgumentException("Cannot divide by zero");
 		return a % b == 0;
 	}
 
@@ -169,19 +170,23 @@ public class Calculate {
 	public static double round2(double number) {
 		double output = 0;
 		if (number < 0)
-			output = ((int) (number * 100 - 0.5)) / 100;
+			output = ((int) (number * 100 - 0.5)) / 100.0;
 		else
-			output = ((int) (number * 100 + 0.5)) / 100;
+			output = ((int) (number * 100 + 0.5)) / 100.0;
 		return output;
-
 	}
 
 	// Returns the input to the power of a positive integer
-	public static double exponent(double number, double power) {
+	public static double exponent(double number, int power) {
 		if (power < 0)
 			throw new IllegalArgumentException("Currently does not support a power less than 0.");
 		if (number == 0 && power == 0)
 			throw new IllegalArgumentException("Cannot compute the power of 0 to 0.");
+		if (power == 0)
+			return 1;
+		if (number == 0)
+			return 0;
+
 		int iteration = 1;
 		double base = number;
 		while (iteration < power) {
@@ -196,11 +201,10 @@ public class Calculate {
 		if (number == 0)
 			return 1;
 		if (number < 0)
-			throw new IllegalArgumentException("Hey! You can't compute the factoral of a negative number.");
+			throw new IllegalArgumentException("Hey! You can't compute the factorial of a negative number.");
 		for (int iteration = number - 1; iteration >= 1; iteration--) {
 			number *= iteration;
 		}
-
 		return number;
 	}
 
@@ -230,11 +234,11 @@ public class Calculate {
 		double root = number / 2;
 		do {
 			root = 0.5 * (number / root + root);
-		} while (absValue(number - square(root)) > 0.25);
+		} while (absValue(number - square(root)) > 0.005); // Wasn't accurate enough
 		return round2(root);
 	}
 
-
+	// Returns roots of the  quadratic equation
 	public static String quadForm(int a, int b, int c) {
 		if (discriminant(a, b, c) < 0)
 			return "no real roots";
