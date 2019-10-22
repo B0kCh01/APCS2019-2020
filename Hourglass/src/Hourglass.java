@@ -1,3 +1,14 @@
+// Nathan Choi
+// APCS 3rd
+// October 12, 2019
+// Create an Hour Glass Program
+
+
+/*
+ *  For the main, method, I used a bunch of println and print, but the hourglass
+ *  building itself only took 10 prints.
+ */
+
 import java.util.Scanner;
 
 public class Hourglass {
