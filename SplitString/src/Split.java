@@ -72,12 +72,11 @@ public class Split {
     */
     
     private static String task2(String meal) {
-        String[] mealwithoutspace = meal.split(" ");
-        String proccessedMeal = "";
-        for (String ingredient : mealwithoutspace)
-            proccessedMeal += ingredient;
-        String[] splitMeal = proccessedMeal.split("bread");
-        String inside = "";
+        String processedMeal = "", inside = "";
+        String[] mealNoSpace = meal.split(" ");
+        for (String ingredient : mealNoSpace)
+            processedMeal += ingredient;
+        String[] splitMeal = processedMeal.split("bread");
         for (int index = 1; index < splitMeal.length - 1; index++)
             inside += splitMeal[index] + " ";
         return "You have a " + inside + "sandwich.";
