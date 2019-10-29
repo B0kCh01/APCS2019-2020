@@ -1,24 +1,72 @@
+// Nathan Choi
+// APCS 3rd
+// October 28, 2019
+
+/*
+    1) Contains multiple list manipulating methods.
+    2) Has a runnable main method that utilizes them.
+*/
+
 import java.util.Arrays;
 
 public class ArraysLab3 {
     public static void main(String[] args) {
-        int[] arr1 = {1, 2, 3, 4, 5};
-        int[] arr2 = {1, 1, 1, 1, 1};
-        System.out.println(Arrays.toString(sum(arr1, arr2)));
-        System.out.println(Arrays.toString(append(arr1, 8)));
-        System.out.println(Arrays.toString(remove(arr1, 2)));
-        System.out.println(sumEven(arr2));
+        // integer arrays a1, a2, sumArr, appendArr, removeArr
+        int[] arrays, sumArr, appendArr, removeArr;
         
-        System.out.println(Arrays.toString(arr2));
-        rotateRight(arr2);
+        // int variables appendNum, removeIdx, sumOfEvens
+        int appendNum, removeIdx, sumOfEvens;
+        
+        // Declare array a1 containing the values (5, 10, 15, 20, 25, 30, 35, 40)
+        // ------- array a2 containing the values (7, 14, 21, 28, 35, 42, 49, 56)
+        int[] a1 = {5, 10, 15, 20, 25, 30, 35, 40};
+        int[] a2 = {7, 14, 21, 28, 35, 42, 49, 56};
+        
+        // Form sumArr by calling the sum method with a1 and a2 as inputs
+        sumArr = sum(a1, a2);
+        
+        // Declare int appendNum and set it to 200.
+        appendNum = 200;
+        
+        // Form appendArr by calling the append method with a1 and appendNum as inputs
+        appendArr = append(a1, appendNum);
+        
+        // Declare int removeIdx and set it to 5.
+        removeIdx = 5;
+        
+        // Form removeArr by calling remove with a2 and removeIdx
+        removeArr = remove(a2, removeIdx);
+        
+        // Form sumOfEvens by calling sumEven with appendArr as the input
+        sumOfEvens = sumEven(appendArr);
+        
+        // Call rotateRight with a1 as the input
+        rotateRight(a1);
+        
+        // On their own lines print out (use Arrays.toString to transform arrays into a printable strings) :
+        System.out.println(" # |   VARIABLE | VALUE");
+        System.out.println("-------------------------------------------------------");
+        // 1) a1
+        System.out.println(" 1 |         a1 | " + Arrays.toString(a1));
+        // 2) sumArr
+        System.out.println(" 2 |     sumArr | " + Arrays.toString(sumArr));
+        // 3) appendArr
+        System.out.println(" 3 |  appendArr | " + Arrays.toString(appendArr));
+        // 4) removeArr
+        System.out.println(" 4 |  removeArr | " + Arrays.toString(removeArr));
+        // 5) sumOfEvens (an int you don’t need Arrays.toString)
+        System.out.println(" 5 | sumOfEvens | " + sumOfEvens);
+
+        
     }
     // 1) Write a method sum that accepts two arrays of integers arr1 and arr2 and returns an array of integers,
     // in which every element is the sum of the elements at that index for the arrays arr1 and arr2.
     // You can assume arrays arr1 and arr2 have at least one element each and are the same length.
     private static int[] sum(int[] arr1, int[] arr2) {
+        int[] newArr = new int[arr1.length];
         for (int i = 0; i < arr1.length; i++)
-            arr2[i] += arr1[i];
-        return arr2;
+            newArr[i] += arr1[i];
+        return newArr;
     }
     
     // 2) Write a method append that accepts an array of integers arr of length n and an integer num,
@@ -54,7 +102,7 @@ public class ArraysLab3 {
     
     private static int sumEven(int[] arr) {
         int sum = 0;
-        for (int num : arr) sum += num;
+        for (int num : arr) if (num%2==0) sum += num;
         return sum;
     }
     
@@ -64,35 +112,9 @@ public class ArraysLab3 {
     // You can assume arr has at least one element.
 
     private static void rotateRight(int[] arr) {
-         int[] newArr = {arr[arr.length - 1]};
-         for (int i = 0; i < arr.length - 1; i++)
-             newArr = append(newArr, arr[i]);
-         System.out.println(Arrays.toString(newArr));
-;    }
+         int last = arr[arr.length - 1];
+         for (int i = arr.length - 1; i > 0; i--)
+             arr[i] = arr[i-1];
+         arr[0] = last;
+    }
 }
-
-/*
-
-public static void rotateRight(int[] arr) {
-
-6) Write a method main that will
-
-Contain
-integer arrays a1, a2, sumArr, appendArr, removeArr
-int variables appendNum, removeIdx, sumOfEvens
-Carry out the following actions
-Declare array a1 containing the values (5, 10, 15, 20, 25, 30, 35, 40) and array a2 containing the values (7, 14, 21, 28, 35, 42, 49, 56)
-Form sumArr by calling the sum method with a1 and a2 as inputs
-Declare int appendNum and set it to 200.
-Form appendArr by calling the append method with a1 and appendNum as inputs
-Declare int removeIdx and set it to 5.
-Form removeArr by calling remove with a2 and removeIdx
-Form sumOfEvens by calling sumEven with appendArr as the input
-Call rotateRight with a1 as the input
-On their own lines print out (use Arrays.toString to transform arrays into a printable strings) :
-sumArr
-appendArr
-removeArr
-sumOfEvens (an int you don’t need Arrays.toString)
-a1
- */
