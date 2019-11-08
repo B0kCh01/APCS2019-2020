@@ -57,35 +57,35 @@ public class FracCalc {
             int[] out = new int[4];
     	    // Parses expression in blocks of 3
             String fraction1, operand, fraction2;
-    	    for (int index = 2; index < inputs.length; index+=2) {
-                fraction1 = parseFraction(inputs[index - 2]);
-                operand = inputs[index - 1];
-                fraction2 = parseFraction(inputs[index]);
-                if (!isInt(fraction1.substring(fraction1.length()-1)))
-                    return fraction1;
+            int[] fraction1Int, fraction2Int;
+    	    for (int index = 0; index < inputs.length / 2; index++) {
+                if (index == 0) {
+                    fraction1 = parseFraction(inputs[0]);
+                    if (!isInt(fraction1.substring(fraction1.length()-1)))
+                        return fraction1;
+                    fraction1Int = toIntArray(fraction1);
+                } else {
+                    fraction1Int = out;
+                }
+
+                fraction2 = parseFraction(inputs[2*index + 2]);
                 if (!isInt(fraction2.substring(fraction2.length()-1)))
                     return fraction2;
-                int[] fraction1Int = toIntArray(fraction1);
-                int[] fraction2Int = toIntArray(fraction2);
-                switch (operand) {
-                    case "+":
-                        out = addSubtract(fraction1Int, fraction2Int, true);
-                        break;
-                    case "-":
-                        out = addSubtract(fraction1Int, fraction2Int, false);
-                        break;
-                    case "*":
-                        out = multiplyDivision(fraction1Int, fraction2Int, true);
-                        break;
-                    case "/":
-                        out = multiplyDivision(fraction1Int, fraction2Int, false);
-                        break;
-                    default:
-                        return "Unsupported Operand";
-                }
+                fraction2Int = toIntArray(fraction2);
+
+                operand = inputs[index*2 + 1];
+
+                if (operand.equals("+"))
+                    out = addSubtract(fraction1Int, fraction2Int, true);
+                else if (operand.equals("-"))
+                    out = addSubtract(fraction1Int, fraction2Int, false);
+                else if (operand.equals("*"))
+                    out = multiplyDivision(fraction1Int, fraction2Int, true);
+                else if (operand.equals("/"))
+                    out = multiplyDivision(fraction1Int, fraction2Int, false);
+                reduceFraction(out);
+                toMixed(out);
             }
-            reduceFraction(out);
-            toMixed(out);
             return formatAnswer(out);
         } else {
             return "Missing operator?";
@@ -272,10 +272,18 @@ public class FracCalc {
     
     // Check if input String is a number
     private static boolean isInt(String string) {
-        try {
-            Integer.parseInt(string);
-        } catch (NumberFormatException e) {
-            return false;
+        if(string.contains("-")){
+            if(string.indexOf("-") != 0){
+                return false;
+            } else {
+                string = string.substring(1);
+            }
+        }
+        char[] list = string.toCharArray();
+        for(char c : list){
+            if(!Character.isDigit(c)){
+                return false;
+            }
         }
         return true;
     }
