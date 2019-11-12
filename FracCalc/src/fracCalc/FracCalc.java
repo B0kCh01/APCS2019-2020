@@ -3,11 +3,7 @@ package fracCalc;
 import java.util.*;
 
 public class FracCalc {
-
     public static void main(String[] args) {
-        int[] a = {0, 1, 2, -1};
-        int[] b = {0, 1, 2, 1};
-        //System.out.println(Arrays.toString(addSubtract(a, b, true)));
     	// MAIN  METHOD
     	Scanner sc = new Scanner(System.in);
     	System.out.println("FracCalc by Nathan Choi (b0kch01)");
@@ -17,7 +13,7 @@ public class FracCalc {
     	while (!quit) {
 	    	System.out.print("\nInput: ");
 	    	String input = sc.nextLine();
-	    	if (input.equals("quit")) {
+	    	if (input.equalsIgnoreCase("quit")) {
 	    		System.out.print("Bye!");
 	    		quit = true;
 	    	}
@@ -28,16 +24,17 @@ public class FracCalc {
     	sc.close();
     }
 
-    public static String produceAnswer(String input) {
+    protected static String produceAnswer(String input) {
+        if (input.equals(""))
+            return "Error: Nothing + Nothing = Nothing";
     	// Check for invalid characters
     	String accepted = "+-*1234567890_/ ";
     	for (String character : input.split(""))
     		if (!accepted.contains(character))
-    			return "I found an invalid symbol!";
+    			return "Error: I found an invalid symbol!";
         // Check for invalid formatting
         if (input.contains("  ") || input.split("")[0].equals(" "))
-            return "Don't place spaces where you don't need them.";
-        
+            return "Error: Don't place spaces where you don't need them.";
         return calculate(input);
     }
     
@@ -81,15 +78,18 @@ public class FracCalc {
                     out = addSubtract(fraction1Int, fraction2Int, false);
                 else if (operand.equals("*"))
                     out = multiplyDivision(fraction1Int, fraction2Int, true);
-                else if (operand.equals("/"))
+                else if (operand.equals("/")) {
+                    if (fraction2Int[0] == 0 && fraction2Int[1] == 0)
+                        return "Error: Cannot divide by zero";
                     out = multiplyDivision(fraction1Int, fraction2Int, false);
+                }
                 reduceFraction(out);
+                System.out.println(fraction2);
                 toMixed(out);
             }
             return formatAnswer(out);
-        } else {
-            return "Missing operator?";
         }
+    	return "Error: Missing operator or operand?";
     }
 
     private static int[] toIntArray(String input) {
@@ -123,12 +123,12 @@ public class FracCalc {
     	String accepted = "-1234567890_/";
     	for (String character : mixed.split(""))
     		if (!accepted.contains(character))
-    			return "I found an invalid symbol!";
+    			return "Error: I found an invalid symbol!";
     	
     	for (String character : mixed.split(""))
     		if (isInt(character))
     			hasNum = true;
-    	if (!hasNum || mixed.charAt(mixed.length()-1) == '_') return "Oh no! Make sure to have numbers";
+    	if (!hasNum || mixed.charAt(mixed.length()-1) == '_') return "Error: Oh no! Make sure to have numbers";
     	
     	// Default values of fraction properties
         int whole       = 0,
@@ -143,16 +143,16 @@ public class FracCalc {
 	        	numerator = Integer.parseInt(fraction[0]); // Parse numerator / denominator
 	        	denominator = Integer.parseInt(fraction[1]);
 	        	if (denominator == 0)
-	        	    return "Haha nice one! I don't want zeros in my denominator!";
+	        	    return "Error: Haha nice one! I don't want zeros in my denominator!";
 	        	if (mixArray.length == 2) // If fraction has a number in front, get whole number
 	            	whole = Integer.parseInt(mixArray[0]);
 	        } else if (mixArray.length == 2) { // Error if not a fraction and has something random after "_"
-	        	return "Make sure to have a fraction after \"_\".";
+	        	return "Error: Make sure to have a fraction after \"_\".";
 	        } else {
 	        	whole = Integer.parseInt(mixArray[0]); // If no fraction and only has whole number
 	        }
         } catch (NumberFormatException e) { // Checks for random symbol combinations and huge integers
-        	return "Oh no! Make sure to follow rules!";
+        	return "Error: Oh no! Make sure to follow rules!";
         }
 
         return String.format("%d,%d,%d", whole, numerator, denominator);
@@ -263,28 +263,21 @@ public class FracCalc {
     	}
     	return gcf;
     }
-    
+
     // LCM Calculator
     private static int getLCM(int a, int b) {
-    	// LCM is ( a x b )/gcd 
-    	return (a*b)/getGCF(a, b);
+    	return (a*b)/getGCF(a, b); // LCM is ( a x b )/gcd
     }
-    
+
     // Check if input String is a number
     private static boolean isInt(String string) {
-        if(string.contains("-")){
-            if(string.indexOf("-") != 0){
-                return false;
-            } else {
-                string = string.substring(1);
-            }
-        }
+        if(string.contains("-"))
+            if(string.indexOf("-") != 0) return false;
+            else string = string.substring(1);
         char[] list = string.toCharArray();
-        for(char c : list){
-            if(!Character.isDigit(c)){
+        for(char c : list)
+            if (!Character.isDigit(c))
                 return false;
-            }
-        }
         return true;
     }
 }
