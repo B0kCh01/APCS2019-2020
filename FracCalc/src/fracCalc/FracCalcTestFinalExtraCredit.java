@@ -27,7 +27,7 @@ public class FracCalcTestFinalExtraCredit {
     
     // Error Handling (check if the produced answer contains "error")
     @Test public void ErrorHandling1() {assertTrue(FracCalc.produceAnswer("1 + + 1/2").toLowerCase().contains("error"));}
-    //@Test public void ErrorHandling2() {assertTrue(FracCalc.produceAnswer("12").toLowerCase().contains("error"));}
+    @Test public void ErrorHandling2() {assertTrue(FracCalc.produceAnswer("12").toLowerCase().contains("error"));}
     @Test public void ErrorHandling3() {assertTrue(FracCalc.produceAnswer("1 +2").toLowerCase().contains("error"));}
     @Test public void ErrorHandling4() {assertTrue(FracCalc.produceAnswer("5_ + 3_1/2").toLowerCase().contains("error"));}
     @Test public void ErrorHandling5() {assertTrue(FracCalc.produceAnswer("5_2/ + 3").toLowerCase().contains("error"));}
