@@ -1,15 +1,13 @@
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class ArrayListPracticeLab {
     // printMe is just a quick tool to check your work.  Use it in conjunction with the test cases in main
     public static void printMe(ArrayList<String> theList) {
-        for (String str : theList)
-            System.out.print(str + ", ");
-        // I know, it prints an extra comma... live with it.
-        System.out.println();
-
+        String out = "";
+        for (String str : theList) out += str + ", ";
+        System.out.println("Output: " + out.substring(0, out.length()-2));
     }
-
     /*
      * convertArrayToList
      *
@@ -22,10 +20,6 @@ public class ArrayListPracticeLab {
             arrayListString.add(str);
         return arrayListString;
     }
-
-
-
-
     /*
      * maxLength
      *
@@ -33,19 +27,13 @@ public class ArrayListPracticeLab {
      * returns an int, the length of the longest string in the list. If your method is passed an
      * empty list, it should return 0.
      */
-
     private static int maxLength(ArrayList<String> inputList) {
-        if (inputList.length() == 0) return 0;
+        if (inputList.size() == 0) return 0;
         int max = 0;
-        for (int i = 0; i < inputList.length(); i++){
-            if (inputList.get(i).length() > max)
-                max = inputList.get(i);
-        }
+        for (String str : inputList)
+            if (str.length() > max) max = str.length();
         return max;
     }
-
-
-
     /*
      * swapPairs
      *
@@ -64,7 +52,13 @@ public class ArrayListPracticeLab {
      *  The returned list should contain {"be", "to", "not", "or", "be", "to", "hamlet"}
      */
 
-
+    private static ArrayList<String> swapPairs(ArrayList<String> inputList) {
+        for (int i = 0; i < inputList.size(); i += 2) {
+            inputList.add(i, inputList.get(i + 1));
+            inputList.remove(i + 1);
+        }
+        return inputList;
+    }
 
 
 
@@ -106,17 +100,17 @@ public class ArrayListPracticeLab {
 
 
 
-
         // To test your maxLength method, convert the following to ArrayLists of Strings and
         // pass them into your maxLength method.  (You'll want to complete the convertArrayToList method first.)
         // Expected output:  6, 27, 0
         String[] test_max_1 = {"to", "be", "or", "not", "to", "be", "hamlet"};
         String[] test_max_2 = {"Only one really long string"};
         String[] test_max_3 = {};
-
-        //printMe( maxLength( convertArrayToList(test_max_1) ) );
-
-
+        ArrayList<String> text_max = new ArrayList<String>();
+        text_max.add("" + maxLength(convertArrayToList(test_max_1)));
+        text_max.add("" + maxLength(convertArrayToList(test_max_2)));
+        text_max.add("" + maxLength(convertArrayToList(test_max_3)));
+        printMe(text_max);
 
 
         // To test your swapPairs method, convert the following to ArrayLists of Strings and
@@ -130,7 +124,7 @@ public class ArrayListPracticeLab {
         String[] test_swap_2 = {"I", "love", "programming!"};
         String[] test_swap_3 = {"don't move me"};
         String[] test_swap_4 = {};
-
+        System.out.println()
 
 
 
