@@ -1,13 +1,10 @@
-public class Calculate {
-	public final double pi = 3.14159;
+// Coded by Nathan Choi
+// APCS 3rd
+// November 14, 2019
 
+public class Calculate {
 	// returns the input to the power of 2
 	public static int square(int number) {
-		return number * number;
-	}
-
-	// returns the input to the power of 2
-	public static double square(double number) {
 		return number * number;
 	}
 
@@ -16,36 +13,29 @@ public class Calculate {
 		return number * number * number;
 	}
 
-	// returns the input to the power of 3
-	public static double cube(double number) {
-		return number * number * number;
-	}
-
 	// returns the mean average of two doubles
-	public static double average(double one, double two) {
-		return (one + two) / 2.0; // Adds the two numbers and divides by 2
+	public static double average(double number1, double number2) {
+		return (number1 + number2) / 2.0; // Adds the two numbers and divides by 2
 	}
 
 	// returns the average of three doubles
-	public static double average(double one, double two, double three) {
-		return (one + two + three) / 3.0; // Ads the three numbers and divides by 3
+	public static double average(double number1, double number2, double number3) {
+		return (number1 + number2 + number3) / 3.0; // Adds the three numbers and divides by 3
 	}
 
 	// returns the equivalent degrees given radians
 	public static double toDegrees(double radians) {
-		final double pi = 3.14159;
-		return (radians / pi) * 180;
+		return (radians / 3.14159) * 180;
 	}
 
 	// returns the equivalent radians given degrees
 	public static double toRadians(double degrees) {
-		final double pi = 3.14159;
-		return (degrees / 180) * pi;
+		return (degrees / 180) * 3.14159;
 	}
 
 	// returns the discriminant given constants a, b, c
 	public static double discriminant(double a, double b, double c) {
-		return b*b - 4*a*c;
+		return (b * b) - (4 * a * c);
 	}
 
 	// returns an equivalent improper fraction given mixed fraction
@@ -68,12 +58,12 @@ public class Calculate {
 		// throw error if denominator is 0
 		if (den == 0)
 			throw new IllegalArgumentException("The denominator cannot be 0!");
-		// If fraction is negative, add "-"    // if the fraction can be mixed      // construct the rest
+		// If fraction is negative, add "-"    // if the fraction has a mixed      // construct the rest
 		return (num * den < 0 ? "-" : "") + (num / den > 0 ? num / den + "_" : "") + num % den + "/" + den;
 	}
 
 	// returns a polynomial given a fully factored single variable expression
-	public static String foil(int a, int b, int c, int d, String var) {
+	public static String foil(int a, int b, int c, int d, String varName) {
 		// Initialize new variables
 		String term1_str = "";
 		String term2_str = "";
@@ -90,7 +80,7 @@ public class Calculate {
 					term1_str += term1_int;
 				term1_str += "-";
 			}
-			term1_str += var + "^2";
+			term1_str += varName + "^2";
 		}
 		// This will check for the next operator and b constant
 		if (term2_int != 0) {
@@ -99,7 +89,7 @@ public class Calculate {
 			else
 				term2_str += term1_str.equals("") ? "" : " + ";
 			term2_int = absValue(term2_int);
-			term2_str += term2_int == 1 ? var : term2_int + var;
+			term2_str += term2_int == 1 ? varName : term2_int + varName;
 		}
 
 		// This will check for the last operator and c constant
@@ -117,16 +107,9 @@ public class Calculate {
 	}
 
 	// Returns a boolean to verify if one integer is divisible by the other
-	public static boolean isDivisibleBy(int a, int b) {
-		if (b == 0) throw new IllegalArgumentException("Cannot divide by zero");
-		return a % b == 0;
-	}
-
-	// Returns the absValue of the input
-	public static int absValue(int number) {
-		if (number < 0) // If the number is less than 0, make it positive
-			return number*-1;
-		return number;
+	public static boolean isDivisibleBy(int dividend, int divisor) {
+		if (divisor == 0) throw new IllegalArgumentException("Cannot divide by zero");
+		return dividend % divisor == 0;
 	}
 
 	// Returns the absValue of the input
@@ -143,13 +126,6 @@ public class Calculate {
 		return a >= b ? a : b;
 	}
 
-	// Returns the larger value of two integers
-	public static int max(int a, int b) {
-		// If a is greater than or equal to b, return a
-		// else, b
-		return a >= b ? a : b;
-	}
-
 	// Returns the larger value of three doubles
 	public static double max(double a, double b, double c) {
 		if (a >= b && b >= c) // if a > b > c, a is the biggest
@@ -159,14 +135,13 @@ public class Calculate {
 		return c; // If neither are the biggest, c has to be the biggest
 	}
 
-	// Returns the smaller value of two doubles
-	public static double min(double a, double b) {
+	// Returns the smaller value of two integers
+	public static int min(int a, int b) {
 		// Return a if a is less than or equal to b else return b
 		return a <= b ? a : b;
 	}
 
-	// Returns the smaller value of two integers
-	public static int min(int a, int b) {
+	public static double min(double a, double b) {
 		// Return a if a is less than or equal to b else return b
 		return a <= b ? a : b;
 	}

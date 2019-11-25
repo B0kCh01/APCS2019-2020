@@ -9,7 +9,7 @@ public class FracCalc {
             System.out.println("Answer: " + produceAnswer(input));
     }
     // Main method to produce the answer and return it to the main method
-    protected static String produceAnswer(String input) {
+    public static String produceAnswer(String input) {
         for (String character : input.split("")) // Check for invalid characters
             if (!"+-*1234567890_/ ".contains(character)) return "Error: I found an invalid symbol!";
         if (input.equals("") || input.contains("  ") || input.charAt(0) == ' ') // Check for inappropriate spacing
@@ -104,8 +104,7 @@ public class FracCalc {
         return fixNeg(out);
     }
     private static int[] multiplyDivision(int[] a, int[] b, boolean multiply) { // If multiply is true, multiply, if not, divide
-        if (multiply) return new int[]{0, a[1] * b[1], a[2] * b[2], a[3] * b[3]};
-        return new int[]{0, a[1] * b[2], a[2] * b[1], a[3] * b[3]};
+        return (multiply) ? new int[]{0, a[1] * b[1], a[2] * b[2], a[3] * b[3]} : new int[]{0, a[1] * b[2], a[2] * b[1], a[3] * b[3]};
     }
     private static int getGCF(int a, int b) { return (b == 0) ?  a : getGCF(b, a%b); } // Get the GCF/GCD of 2 numbers
     private static boolean isInt(String string) { // Check if input String is a number (Thanks Nathan and Sebastian)
