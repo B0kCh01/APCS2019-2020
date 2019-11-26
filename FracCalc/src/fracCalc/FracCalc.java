@@ -121,7 +121,7 @@ public class FracCalc {
                     whole = Integer.parseInt(mixArray[0]);
                 if (denominator == 0) // Return an error if denominator is 0
                     return "Error: Haha nice one! I don't want zeros in my denominator!";
-            } else if (mixArray.length == 2) // If mixArray has a space for fraction, but is empty, return error
+            } else if (mixArray.length == 2) // If mixArray has a space for fraction, but its empty, return error
                 return "Error: Make sure to have a fraction after \"_\".";
             else
                 whole = Integer.parseInt(mixArray[0]); // If no fraction and only has whole number
