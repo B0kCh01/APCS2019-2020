@@ -28,9 +28,9 @@ public class FracCalc {
 
         String[] inputs = input.split(" "); // Split the raw input into a list of arguments
 
-        if (inputs.length <= 2) { // A expression MUST have a three parts (value, operand, value)
+        if (inputs.length <= 2) { // A expression MUST have at least three parts (value, operand, value)
             return "Error: Not an expression or you forgot to add a space.";
-        } else { // If number requirements met, continue to calculate.
+        } else { // If length requirement met, continue to calculate.
             int[] out = new int[4]; // Output fraction initialized
 
             /*
