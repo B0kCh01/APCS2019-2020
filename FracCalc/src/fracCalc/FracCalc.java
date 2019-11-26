@@ -7,7 +7,7 @@ package fracCalc;
 import java.util.*;
 
 public class FracCalc {
-    // MAIN  METHOD (Super optimized)
+    // MAIN  METHOD
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         System.out.print("FracCalc by Nathan Choi (b0kch01)\nEnter \"quit\" to quit!\n\nInput: ");
@@ -18,7 +18,7 @@ public class FracCalc {
             System.out.println("Answer: " + produceAnswer(input)); // After input is collected, print answer
         }
     }
-    // Main method to produce the answer and return it to the main method
+    // Primary method to produce the answer and return it to the main method
     protected static String produceAnswer(String input) {
         for (String character : input.split("")) // Check for invalid characters in the whole input
             if (!"+-*1234567890_/ ".contains(character))
@@ -28,7 +28,7 @@ public class FracCalc {
 
         String[] inputs = input.split(" "); // Split the raw input into a list of arguments
 
-        if (inputs.length <= 2) { // A expression MUST have at least three parts (value, operand, value)
+        if (inputs.length <= 2) { // Check if expression has at least three parts (value, operand, value)
             return "Error: Not an expression or you forgot to add a space.";
         } else { // If length requirement met, continue to calculate.
             int[] out = new int[4]; // Output fraction initialized
@@ -47,7 +47,7 @@ public class FracCalc {
                 int[] fraction1Int = out; // Initialize fraction1 as the output of the previous calculation.
 
                 if (group == 0) { // If this is the first iteration, fraction1 is the first element
-                    String fraction1 = parseFraction(inputs[0]); // If no fraction, return the whole number
+                    String fraction1 = parseFraction(inputs[0]); //No fraction present, return the whole number
                     if (!isInt(fraction1.substring(fraction1.length()-1))) // If there is an error, return it
                         return fraction1;
                     fraction1Int = toIntArray(fraction1.split(","));
@@ -121,7 +121,7 @@ public class FracCalc {
                     whole = Integer.parseInt(mixArray[0]);
                 if (denominator == 0) // Return an error if denominator is 0
                     return "Error: Haha nice one! I don't want zeros in my denominator!";
-            } else if (mixArray.length == 2) // If mixArray has a space for fraction, but its empty, return error
+            } else if (mixArray.length == 2) // If mixArray has a space for fraction, but it's empty, return error
                 return "Error: Make sure to have a fraction after \"_\".";
             else
                 whole = Integer.parseInt(mixArray[0]); // If no fraction and only has whole number
@@ -230,11 +230,3 @@ public class FracCalc {
         return fractionProp[0];
     }
 }
-
-// RIP Here lies one operand expression
-// String fractionString = parseFraction(inputs[0]);
-// if (!isInt(fractionString.substring(fractionString.length()-1))) return fractionString;
-// int[] fractionInteger = toIntArray(fractionString);
-// toImproper(fractionInteger);
-// toMixed(reduceFraction(fractionInteger));
-// return formatAnswer(fractionInteger);

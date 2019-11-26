@@ -9,6 +9,7 @@ public class ArrayListPracticeLab {
     private static void printMe(ArrayList<String> theList) {
         String out = "";
         for (String str : theList) out += str + ", ";
+        ""
         System.out.println("Output: " + out.substring(0, out.length()-2));
     }
     /*
