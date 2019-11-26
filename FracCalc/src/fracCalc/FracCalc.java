@@ -1,7 +1,7 @@
 // Nathan Choi
 // APCS 3rd
 // November 25, 2019
-// Fraction Calcualtor -> Was able to achieve in 118 lines but readability...
+// Fraction Calculator -> Was able to achieve in 118 lines but readability...
 
 package fracCalc;
 import java.util.*;
