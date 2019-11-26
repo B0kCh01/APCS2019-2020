@@ -15,20 +15,8 @@ public class FracCalc {
              !input.equalsIgnoreCase("quit"); // While input is not "quit", continue
              System.out.print("\nInput: "), input = sc.nextLine()) // After every iteration, prompt user
         {
-            System.out.println("Answer: " + produceAnswer(input));
+            System.out.println("Answer: " + produceAnswer(input)); // After input is collected, print answer
         }
-    }
-    // Format array[whole, num, den, neg] into a readable String
-    private static String formatAnswer(int[] mixednum) {
-        String output = (mixednum[3] == -1) ?  "-" : ""; // If negative, add negative sign
-        if (mixednum[0] != 0) // If there is a whole number, add it
-            output += mixednum[0];
-        if (mixednum[1] != 0) { // If there a fraction, add it
-            if (mixednum[0] != 0)
-                output += "_"; // Add underscore if whole number is also present
-            output += mixednum[1] + "/" + mixednum[2];
-        }
-        return (output.equals("") || output.equals("-")) ? "0" : output; // Return "0" if nothing applies
     }
     // Main method to produce the answer and return it to the main method
     protected static String produceAnswer(String input) {
@@ -95,6 +83,18 @@ public class FracCalc {
             // After the whole expression is evaluated, send the output to formatAnswer for terminal output
             return formatAnswer(out);
         }
+    }
+    // Format array[whole, num, den, neg] into a readable String for terminal output
+    private static String formatAnswer(int[] mixednum) {
+        String output = (mixednum[3] == -1) ?  "-" : ""; // If negative, add negative sign
+        if (mixednum[0] != 0) // If there is a whole number, add it
+            output += mixednum[0];
+        if (mixednum[1] != 0) { // If there a fraction, add it
+            if (mixednum[0] != 0)
+                output += "_"; // Add underscore if whole number is also present
+            output += mixednum[1] + "/" + mixednum[2];
+        }
+        return (output.equals("") || output.equals("-")) ? "0" : output; // Return "0" if nothing applies
     }
     // An important method that turns a raw input string into an organized format, supporting error messages
     private static String parseFraction(String mixed) {
