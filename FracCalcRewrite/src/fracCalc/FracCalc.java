@@ -19,7 +19,9 @@ public class FracCalc {
     }
 
     public static String produceAnswer(String input) {
-        Fraction fraction = new Fraction(1, 50);
-        return "";
+        Fraction fraction = new Fraction(input);
+        fraction.reduceFraction();
+        fraction.toMixed();
+        return "Your fraction is: " + fraction;
     }
 }
