@@ -112,5 +112,9 @@ public class Fraction {
             if (!Character.isDigit(c)) return false;
         return true;
     }
-
+    //**METHOD PRINTS THE FRACTION OUT FOR CHECKPOINT 2**
+    public String printFrac() {
+        return String.format("whole:%s numerator:%s denominator:%s",
+                    whole, numerator, denominator);
+    }
 }

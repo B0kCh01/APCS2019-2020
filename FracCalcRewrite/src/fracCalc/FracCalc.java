@@ -14,14 +14,13 @@ public class FracCalc {
              !input.equalsIgnoreCase("quit");
              System.out.print("\nInput: "), input = sc.nextLine())
         {
-            System.out.println("Answer: " + produceAnswer(input));
+            System.out.println(produceAnswer(input));
         }
     }
 
     public static String produceAnswer(String input) {
-        Fraction fraction = new Fraction(input);
-        fraction.reduceFraction();
-        fraction.toMixed();
-        return "Your fraction is: " + fraction;
+        String[] inputs = input.split(" ");
+        Fraction fraction = new Fraction(inputs[inputs.length - 1]);
+        return fraction.printFrac();
     }
 }
