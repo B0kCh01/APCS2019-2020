@@ -1,32 +1,24 @@
+// Nathan Choi
 
-public class Traveler 
-{
+public class Traveler {
 	//fields
 	private int distanceTraveled;
 	private String name;
-	
-	
+
 	//constructor
-	public Traveler(String name)
-	{
+	public Traveler(String name) {
 		this.distanceTraveled = 0;
 		this.name = name;
 	}
 	
-	
 	//methods
-	public int getDistanceTraveled()
-	{
+	public int getDistanceTraveled() {
 		return distanceTraveled;
 	}
-	
-	public void travel(int miles)
-	{
+	public void travel(int miles) {
 		distanceTraveled += miles;
 	}
-	
-	public String getName()
-	{
+	public String getName() {
 		return name;
 	}
 	
