@@ -10,7 +10,6 @@
 
 ---
 
-## 🧠 About
-Over the entire school year, our class have written many different programs.
+# 🧠 About
+Over the entire school year, our class have written many different programs, all of which are written in Java.
 
-All of which are written in Java.
