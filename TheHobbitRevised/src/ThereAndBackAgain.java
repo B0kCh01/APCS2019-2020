@@ -16,5 +16,28 @@ public class ThereAndBackAgain {
 		// traveled in miles.
 		for (Traveler traveler : party1)
 			System.out.println(traveler.getName() + " has traveled " + traveler.getDistanceTraveled() + " miles.");
+
+		System.out.println("\n\nPART 2: \n");
+
+		String[] dwarfNames = {"Fili", "Kili", "Dori", "Ori", "Nori", "Balin", "Dwalin",
+		"Oin", "Gloin", "Bifur", "Bofur", "Bombur", "Thorin"};
+
+		// Make a new ArrayList to hold a 2nd party of Travelers called party2:
+		ArrayList<Traveler> party2 = new ArrayList<>();
+		// Make a new Hobbit called "Bilbo" and add him to party2
+		party2.add(new Hobbit("Bilbo"));
+		// Make a new Wizard called "Gandalf" and add him to party2.
+		party2.add(new Wizard("Gandalf", ""));
+		
+		//write createParty
+		// Call the createParty method and pass it party2 and the dwarfNames array.
+
+		// create party should add all the new dwarves to party2,
+
+		//Write allTravel
+		// Finally, call the allTravel method passing it party2 and 100 (representing
+		// the 100 miles that party2 has traveled together.
+
+		//Make sure your code prints out the name and distances party2 has traveled.
 	}
 }

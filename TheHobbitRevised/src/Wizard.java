@@ -11,16 +11,18 @@ public class Wizard extends Traveler {
 	//  Override the Traveler's getName method to append the Wizard's color
 
 	private String color;
+	private int distanceTraveled;
 
 	public Wizard(String name, String color) {
-
+		super(name);
+		this.color = color;
 	}
 
 	public void travel(int miles) {
-
+		super.travel(miles*3);
 	}
 
 	public String getName() {
-
+		return super.getName() + " the " + color;
 	}
 }
