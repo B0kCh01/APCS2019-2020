@@ -23,8 +23,9 @@ public class ThereAndBackAgain {
 		for (Traveler t : party1)
 			System.out.println(t.getName() + " has traveled " + t.getDistanceTraveled() + " miles.");
 
+		// ===================================
 		System.out.println("\n\nPART 2: \n");
-
+		// ===================================
 		String[] dwarfNames = { "Fili", "Kili", "Dori", "Ori", "Nori", "Balin", "Dwalin", "Oin", "Gloin", "Bifur",
 				"Bofur", "Bombur", "Thorin" };
 
@@ -45,17 +46,19 @@ public class ThereAndBackAgain {
 		// Finally, call the allTravel method passing it party2 and 100 (representing
 		// the 100 miles that party2 has traveled together.
 		allTravel(party2, 100);
-		// Make sure your code prints out the name and distances party2 has traveled.
 
+		// Make sure your code prints out the name and distances party2 has traveled.
 		for (Traveler t : party2)
 			System.out.println(t.getName() + " has traveled " + t.getDistanceTraveled() + " miles.");
 	}
 
+	// For each name in the list, make a new dwarf with that name and store in party
 	private static void createParty(ArrayList<Traveler> party, String[] nameList) {
 		for (String name : nameList)
 			party.add(new Dwarf(name));
 	}
 
+	// For each Traveler in the party, travel certain amount of miles
 	private static void allTravel(ArrayList<Traveler> party, int miles) {
 		for (Traveler traveler : party)
 			traveler.travel(miles);
