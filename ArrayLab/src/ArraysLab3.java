@@ -13,7 +13,7 @@ import java.util.Arrays;
 public class ArraysLab3 {
     public static void main(String[] args) {
         // integer arrays a1, a2, sumArr, appendArr, removeArr
-        int[] arrays, sumArr, appendArr, removeArr;
+        int[] sumArr, appendArr, removeArr;
 
         // int variables appendNum, removeIdx, sumOfEvens
         int appendNum, removeIdx, sumOfEvens;
