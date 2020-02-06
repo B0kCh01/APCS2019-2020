@@ -9,7 +9,7 @@
  
   <img src="https://img.shields.io/badge/Efficient:-Somewhat-yellow?style=for-the-badge">
   <p>       </p>
-  <img src="https://img.shields.io/badge/Java:-Yes!!-green?style=for-the-badge">
+  <img src="https://img.shields.io/badge/Java:-Yes-green?style=for-the-badge">
 </div>
 
 ---
