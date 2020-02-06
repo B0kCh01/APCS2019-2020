@@ -1,9 +1,7 @@
 # gitignore? Maybe?
-.idea
 out
 FracCalc.iml
 FracCalcTestHelper.jar
 junit-4.13-rc-1.jar
-.DS_Store
 FracCalcTest*.java
 *.class
