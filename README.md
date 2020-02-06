@@ -8,8 +8,10 @@
   <h1> AP Computer Science Projects </h1>
 
 </div>
+
 ---
-## About
+
+## 🧠 About
 Over the entire school year, our class have written many different programs.
 
 All of which are written in Java.
