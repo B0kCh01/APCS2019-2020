@@ -1,3 +1,8 @@
+// Nathan Choi
+// APCS 3rd
+// January 13, 2020
+// Excepts expression and outputs answer (support fraction computation)
+
 package fracCalc;
 
 public class Fraction {
@@ -15,7 +20,7 @@ public class Fraction {
     }
     // Overloaded Constructor for passing in a string
     public Fraction (String fractionString) {
-        // Pass to parseFraction and split to the varibles
+        // Pass to parseFraction and split to the variables
         int[] fractionParts = parseFraction(fractionString);
         whole = fractionParts[0];
         numerator = fractionParts[1];
@@ -51,7 +56,7 @@ public class Fraction {
         // If it was mixed, convert back to mix
         if (!wasImproper)
             toMixed();
-        // If it's just a whole number, convert ot swhole number
+        // If it's just a whole number, convert to mixed number
         if (denominator == 1) {
             whole += numerator;
             numerator = 0;
@@ -61,28 +66,33 @@ public class Fraction {
     @Override
     public String toString() {
         String output = (negative == -1) ?  "-" : ""; // If negative, add negative sign
-        if (whole != 0) // If there is a whole number, add it
+        if (whole != 0) // If there is a whole number, add it to output
             output += whole;
-        if (numerator != 0) { // If there a fraction, add it
+        if (numerator != 0) { // If there a fraction, add it to output
             if (whole != 0)
                 output += "_"; // Add underscore if whole number is also present
             output += numerator + "/" + denominator;
         }
+        // Return 0 if the output is empty or has no value
         return (output.equals("") || output.equals("-")) ? "0" : output;
     }
     // Add another fraction
     public void add(Fraction fraction2) {
+        // Convert all fractions to improper
         fraction2.toImproper();
         toImproper();
-        this.numerator = (this.numerator * fraction2.getDenominator() * negative) +
+        // The common denominator is the product of both, so addition is easier to write
+        this.numerator = (this.numerator * fraction2.getDenominator() * this.negative) +
                          (fraction2.getNumerator() * this.denominator * fraction2.getNegative());
         this.denominator *= fraction2.getDenominator();
-        negative = 1;
+        this.negative = 1;
     }
     // Subtract another fraction
     public void subtract(Fraction fraction2) {
+        // Convert both fractions to improper
         fraction2.toImproper();
         toImproper();
+        // Same concept as addition, but numerator values are subtracted
         this.numerator = (this.numerator * fraction2.getDenominator() * negative) -
                          (fraction2.getNumerator() * this.denominator * fraction2.getNegative());
         this.denominator *= fraction2.getDenominator();
@@ -90,18 +100,24 @@ public class Fraction {
     }
     // Multiply another fraction
     public void multiply(Fraction fraction2) {
+        // Convert both fractions to improper
         fraction2.toImproper();
         toImproper();
+        // Multiply numerator by other numerator, same with denominator
         this.numerator *= fraction2.getNumerator();
         this.denominator *= fraction2.getDenominator();
+        // Negative rules apply
         this.negative *= fraction2.getNegative();
     }
     // Divide another fraction
     public void divide(Fraction fraction2) {
+        // Convert fractions to improper
         fraction2.toImproper();
         toImproper();
+        // Divide the numerator by other numerator, same with denominator
         this.numerator *= fraction2.getDenominator();
         this.denominator *= fraction2.getNumerator();
+        // Negative rules apply
         this.negative *= fraction2.getNegative();
     }
     // | Getters |
@@ -131,7 +147,7 @@ public class Fraction {
     public void setNegative(int negative) {
         this.negative = (negative < 0) ? -1 : 1;
     }
-    // Parse fraction will turn String into a list of fractino parts
+    // Parse fraction will turn String into a list of fraction parts
     private int[] parseFraction(String mixed) {
         // Split the string by whole and fraction
         String[] wholeAndFrac = mixed.split("_");
@@ -140,7 +156,7 @@ public class Fraction {
             return new int[]{Integer.parseInt(wholeAndFrac[0]), 0, 1};
         // Return mixed or improper depending if there is a whole
         String[] fraction = wholeAndFrac[wholeAndFrac.length-1].split("/");
-        if (wholeAndFrac.length == 1) 
+        if (wholeAndFrac.length == 1)
             return new int[]{
                     0,
                     Integer.parseInt(fraction[0]),
@@ -152,7 +168,7 @@ public class Fraction {
                     Integer.parseInt(fraction[1])
             };
     }
-    // Move all negatives to the negatives variable
+    // Simplify all negative states and use negative variable to represent overall fraction negativity
     private void fixNeg() {
         // For each property, if negative, toggle the negative property
         int[] fractionProperties = {whole, numerator, denominator};
@@ -175,7 +191,7 @@ public class Fraction {
             return (int) -n;
         return (int) n;
     }
-    //**METHOD PRINTS THE FRACTION OUT FOR CHECKPOINT 2**
+    //** METHOD PRINTS THE FRACTION OUT FOR CHECKPOINT 2 **
     public String printFrac() {
         return String.format("whole:%s numerator:%s denominator:%s",
                     whole, numerator, denominator);
