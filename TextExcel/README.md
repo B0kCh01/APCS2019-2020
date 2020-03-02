@@ -13,7 +13,7 @@
 
 # CheckList
 There are many checkpoints to pass :/
-- [ ] Checkpoint 1: Main command loop, Spreadsheet, SpreadsheetLocation
+- [x] Checkpoint 1: Main command loop, Spreadsheet, SpreadsheetLocation
 - [ ] Checkpoint 2: Assign and inspect TextCells, clear cells, and print sheet
 - [ ] Checkpoint 3: RealCell, ValueCell, PercentCell, and FormulaCell 
 - [ ] Checkpoint 4: Arithmetic formulas made up of constant values
