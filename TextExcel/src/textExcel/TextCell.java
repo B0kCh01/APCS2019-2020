@@ -13,13 +13,15 @@ public class TextCell implements Cell{
 
     @Override
     public String abbreviatedCellText() {
-        if (cellText.length() < 10)
-            return cellText;
-        return cellText.substring(0, 10);
+        String output = cellText;
+        if (output.length() < 10)
+            for (int i = 0; i < 11 - cellText.length(); i++)
+                output += " ";
+        return output.substring(0, 10);
     }
 
     @Override
     public String fullCellText() {
-        return "\"" + cellText + "\"";
+        return cellText;
     }
 }

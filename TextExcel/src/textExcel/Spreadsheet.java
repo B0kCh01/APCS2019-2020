@@ -27,17 +27,14 @@ public class Spreadsheet implements Grid {
 		if (command.charAt(command.length() - 1) == ' ')
 			command = command.substring(0, command.lastIndexOf(' '));
 
-		String[] arguments = command.split(" ");
+		String[] arguments = command.split(" ", 3);
 		if (arguments.length > 1) {
 			if (arguments[0].equalsIgnoreCase("clear") &&
 				SpreadsheetLocation.isLocation(arguments[1])) {
 				SpreadsheetLocation selectedCell = new SpreadsheetLocation(arguments[1].toUpperCase());
 				sheet[selectedCell.getRow()][selectedCell.getCol()] = new EmptyCell();
 			} else if (arguments[1].equals("=")) {
-				System.out.println("found equals");
-				System.out.println(Arrays.toString(arguments));
-				if (SpreadsheetLocation.isLocation(arguments[0].toUpperCase())) {
-					System.out.println("modifying");
+				if (SpreadsheetLocation.isLocation(arguments[0])) {
 					SpreadsheetLocation selectedCell = new SpreadsheetLocation(arguments[0].toUpperCase());
 					sheet[selectedCell.getRow()][selectedCell.getCol()] = new TextCell(arguments[2]);
 				}
@@ -88,10 +85,7 @@ public class Spreadsheet implements Grid {
 
 			for (Cell cell : sheet[row]) {
 				String abbreviatedText = cell.abbreviatedCellText();
-				output += abbreviatedText;
-				for (int i = 0; i < 11 - abbreviatedText.length(); i++)
-					output += " ";
-				output += "|";
+				output += abbreviatedText + "|";
 			}
 			output += "\n";
 		}
