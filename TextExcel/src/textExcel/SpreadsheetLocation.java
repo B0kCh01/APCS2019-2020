@@ -2,8 +2,6 @@ package textExcel;
 
 //Update this file with your own code.
 
-import java.util.Arrays;
-
 public class SpreadsheetLocation implements Location {
     private int col, row;
 

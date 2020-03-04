@@ -8,7 +8,6 @@
 package textExcel;
 
 import java.io.FileNotFoundException;
-import java.util.Arrays;
 import java.util.Scanner;
 
 // Update this file with your own code.
@@ -30,9 +29,9 @@ public class TextExcel {
 		// Main Loop
 		System.out.print("\n[ Command ]: ");
 		for (
-			String input = sc.nextLine(); // Start by initializing input as first input
-			!input.equalsIgnoreCase("quit"); // Keep on running look until "quit" is entered
-			System.out.print("[ Command ]: "), // After each iteration, print carrot and get user input again
+			String input = sc.nextLine(); // Start input as first input
+			!input.equalsIgnoreCase("quit"); // Repeat until input is "quit"
+			System.out.print("[ Command ]: "), // Ask again after each iteration
 			input = sc.nextLine()
 		) {
 			System.out.println(currentSheet.processCommand(input)); // Print Spreadsheet (and error)

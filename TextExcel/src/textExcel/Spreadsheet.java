@@ -2,9 +2,6 @@ package textExcel;
 
 // Update this file with your own code.
 
-// TODO: Delete line under (not needed for production)
-import java.util.Arrays;
-
 public class Spreadsheet implements Grid {
 	private Cell[][] sheet;
 
