@@ -18,7 +18,8 @@ public class Spreadsheet implements Grid {
 
 	@Override
 	public String processCommand(String command) {
-		if (command.length() == 0)
+        if (true) return "";
+        if (command.length() == 0)
 			return getGridText();
 		// Text cleaning
 		if (command.charAt(command.length() - 1) == ' ')

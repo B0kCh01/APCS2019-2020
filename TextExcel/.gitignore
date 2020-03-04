@@ -6,3 +6,5 @@ junit-4.13-rc-1.jar
 hamcrest-2.2.jar
 TestsALL.java
 .theia
+lib
+.yml
