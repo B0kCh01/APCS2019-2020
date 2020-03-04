@@ -49,13 +49,11 @@ public class Spreadsheet implements Grid {
 
 	@Override
 	public int getRows() {
-		// TODO Auto-generated method stub
 		return 20;
 	}
 
 	@Override
 	public int getCols() {
-		// TODO Auto-generated method stub
 		return 12;
 	}
 
