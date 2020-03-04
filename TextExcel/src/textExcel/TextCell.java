@@ -22,6 +22,6 @@ public class TextCell implements Cell{
 
     @Override
     public String fullCellText() {
-        return cellText;
+        return "\"" + cellText + "\"";
     }
 }

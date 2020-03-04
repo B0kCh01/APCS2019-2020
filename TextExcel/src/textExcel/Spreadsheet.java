@@ -2,6 +2,8 @@ package textExcel;
 
 // Update this file with your own code.
 
+import java.util.Arrays;
+
 public class Spreadsheet implements Grid {
 	private Cell[][] sheet;
 
@@ -18,9 +20,8 @@ public class Spreadsheet implements Grid {
 
 	@Override
 	public String processCommand(String command) {
-        if (true) return "";
         if (command.length() == 0)
-			return getGridText();
+			return "";
 		// Text cleaning
 		if (command.charAt(command.length() - 1) == ' ')
 			command = command.substring(0, command.lastIndexOf(' '));
@@ -33,8 +34,11 @@ public class Spreadsheet implements Grid {
 				sheet[selectedCell.getRow()][selectedCell.getCol()] = new EmptyCell();
 			} else if (arguments[1].equals("=")) {
 				if (SpreadsheetLocation.isLocation(arguments[0])) {
-					SpreadsheetLocation selectedCell = new SpreadsheetLocation(arguments[0].toUpperCase());
-					sheet[selectedCell.getRow()][selectedCell.getCol()] = new TextCell(arguments[2]);
+					if (arguments[2].contains("\"")) {
+						SpreadsheetLocation selectedCell = new SpreadsheetLocation(arguments[0]);
+						String longstring = removeQuotes(arguments[2]);
+						sheet[selectedCell.getRow()][selectedCell.getCol()] = new TextCell(longstring);
+					}
 				}
 			}
 		} else if (arguments.length == 1) {
@@ -70,7 +74,7 @@ public class Spreadsheet implements Grid {
 		String output = "   |";
 		// Building Header
 		for (char c = 'A'; c <= 'L'; c++)
-			output += c + "          |";
+			output += c + "         |";
 		output += "\n";
 		// Building main Cells
 		for (int row = 0; row < 20; row++){
@@ -85,7 +89,14 @@ public class Spreadsheet implements Grid {
 			}
 			output += "\n";
 		}
-		return output + "\n";
+		return output;
 	}
 
+	// ====[ Private Methods ]===== //
+	private String removeQuotes(String input) {
+		if (input.charAt(0) == '"' &&
+			input.charAt(input.length() - 1) == '"')
+			return input.substring(1, input.length() - 1);
+		return input;
+	}
 }
