@@ -14,8 +14,9 @@ public class TextCell implements Cell{
     @Override
     public String abbreviatedCellText() {
         String output = cellText;
+        int initLength = output.length();
         if (output.length() < 10)
-            for (int i = 0; i < 11 - cellText.length(); i++)
+            for (int i = 0; i < 10 - initLength; i++)
                 output += " ";
         return output.substring(0, 10);
     }

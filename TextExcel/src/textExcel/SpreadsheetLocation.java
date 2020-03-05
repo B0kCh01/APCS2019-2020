@@ -22,8 +22,9 @@ public class SpreadsheetLocation implements Location {
             if (!"012345678ABCDEFGHIJKL".contains(s))
                 return false;
         int valueOfFirstChar = cellName.charAt(0) - 'A';
+        int row = Integer.parseInt(cellName.substring(1));
         if (valueOfFirstChar >= 0 && valueOfFirstChar <= 11)
-            return Integer.parseInt(cellName.substring(1)) <= 21;
+            return row <= 21 && row > 0;
         return false;
     }
 

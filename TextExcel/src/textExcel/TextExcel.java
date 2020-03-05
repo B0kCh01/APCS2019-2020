@@ -14,6 +14,11 @@ import java.util.Scanner;
 
 public class TextExcel {
 	public static void main(String[] args) {
+		// UI constants
+		String newlines = "";
+		for (int i : new int[100])
+			newlines += "\n";
+
 		// Creating scanner object and spreadsheet object
 		Scanner sc = new Scanner(System.in);
 		Spreadsheet currentSheet = new Spreadsheet();
@@ -31,10 +36,10 @@ public class TextExcel {
 		for (
 			String input = sc.nextLine(); // Start input as first input
 			!input.equalsIgnoreCase("quit"); // Repeat until input is "quit"
-			System.out.print("[ Command ]: "), // Ask again after each iteration
-			input = sc.nextLine()
+			input = sc.nextLine() // Ask again each iteration
 		) {
-			System.out.println(currentSheet.processCommand(input)); // Print Spreadsheet (and error)
+			System.out.println(newlines + currentSheet.processCommand(input)); // Print result
+			System.out.print("[ Command ]: ");
 		}
 	}
 }
