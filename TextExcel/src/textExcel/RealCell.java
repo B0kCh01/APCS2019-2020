@@ -24,6 +24,15 @@ public class RealCell implements Cell {
         return output.substring(0, 10);
     }
 
+    public String abbreviatedCellText(String input) {
+        String output = input + "";
+        int initLength = output.length();
+        if (output.length() < 10)
+            for (int i = 0; i < 10 - initLength; i++)
+                output += " ";
+        return output.substring(0, 10);
+    }
+
     @Override
     public String fullCellText() {
         String output = value + "";
@@ -34,9 +43,5 @@ public class RealCell implements Cell {
 
     double getDouble() {
         return value;
-    }
-
-    void setDouble(double value) {
-        this.value = value;
     }
 }

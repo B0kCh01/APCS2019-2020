@@ -16,8 +16,8 @@ public class TextExcel {
 	public static void main(String[] args) {
 		// UI constants
 		String newlines = "";
-		for (int i : new int[100])
-			newlines += "\n";
+//		for (int i : new int[100])
+//			newlines += "\n";
 
 		// Creating scanner object and spreadsheet object
 		Scanner sc = new Scanner(System.in);

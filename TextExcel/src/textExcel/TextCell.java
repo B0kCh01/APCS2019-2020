@@ -8,7 +8,7 @@ public class TextCell implements Cell{
     }
 
     public TextCell(String input) {
-        cellText = input;
+        cellText = getTextBetween(input, '"');;
     }
 
     @Override
@@ -25,4 +25,12 @@ public class TextCell implements Cell{
     public String fullCellText() {
         return "\"" + cellText + "\"";
     }
+
+    // Gets text between two chars
+	private String getTextBetween(String input, char c) {
+		if (input.charAt(0) == c &&
+			input.charAt(input.length() - 1) == c)
+			return input.substring(1, input.length() - 1);
+		return input;
+	}
 }

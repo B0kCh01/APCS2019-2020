@@ -5,7 +5,7 @@ package textExcel;
 import java.util.Arrays;
 
 public class Spreadsheet implements Grid {
-	public boolean DEBUG = false;
+	private boolean DEBUG = true;
 	private Cell[][] sheet;
 
 	public Spreadsheet() {
@@ -26,10 +26,6 @@ public class Spreadsheet implements Grid {
 
 		String[] arguments = command.split(" ", 3);
 
-		// If whitespace is destroying the split
-		if (arguments.length > 2 && arguments[1].equals(""))
-			arguments = new String[]{arguments[0], arguments[2]};
-
 		if (DEBUG) System.out.println("Input[] = " + Arrays.toString(arguments));
 
 		// More than one word command
@@ -46,8 +42,9 @@ public class Spreadsheet implements Grid {
 					return "ERROR: Not a valid cell at \"<cell> = <value>\"";
 				SpreadsheetLocation selectedCell = new SpreadsheetLocation(arguments[0]);
 
-				// If <value> has only numbers
-				if (isNumeric(arguments[2])) {
+				// If <value> has only number valid formatting
+				if (isRealValue(arguments[2])) {
+					if (DEBUG) System.out.println("It is a number!");
 					if (arguments[2].contains("%")) {
 						double fullNum = Double.parseDouble(arguments[2].substring(0, arguments[2].length() - 1));
 						sheet[selectedCell.getRow()][selectedCell.getCol()] = new PercentCell(fullNum);
@@ -63,22 +60,29 @@ public class Spreadsheet implements Grid {
 						}
 					}
 				}
+				// If <value> is meant for formulas
+				else if (FormulaCell.isFormula(arguments[2])) {
+					if (DEBUG) System.out.println("Passed isFormula: it's a formula!");
+					sheet[selectedCell.getRow()][selectedCell.getCol()] = new FormulaCell(arguments[2]);
+
+					FormulaCell testlog = (FormulaCell) sheet[selectedCell.getRow()][selectedCell.getCol()];
+					if (testlog.getLog().contains("ERROR:"))
+						return testlog.getLog();
+				}
 				// If <value> is meant for TextCell
 				else {
-					if (DEBUG) System.out.println("Failed isNumeric(): it's text!");
-					String fullText = getTextBetween(arguments[2], '"');
-					sheet[selectedCell.getRow()][selectedCell.getCol()] = new TextCell(fullText);
+					if (DEBUG) System.out.println("Failed other checks: it's text!");
+					sheet[selectedCell.getRow()][selectedCell.getCol()] = new TextCell(arguments[2]);
 				}
 			}
 		// One worded command
 		} else if (arguments.length == 1) {
-			if (arguments[0].equalsIgnoreCase("clear")) {
+			if (arguments[0].equalsIgnoreCase("clear"))
 				clearSheet();
-			} else if (SpreadsheetLocation.isLocation(arguments[0])) {
+			else if (SpreadsheetLocation.isLocation(arguments[0]))
 				return getCell(new SpreadsheetLocation(arguments[0])).fullCellText();
-			} else {
+			else
 				return "ERROR: No a valid command!";
-			}
 		}
 		return getGridText();
 	}
@@ -87,12 +91,11 @@ public class Spreadsheet implements Grid {
 	public int getRows() {
 		return 20;
 	}
-
 	@Override
 	public int getCols() {
 		return 12;
 	}
-
+	// Returns the cell given a location
 	@Override
 	public Cell getCell(Location loc) {
 		int col = loc.getCol();
@@ -100,7 +103,7 @@ public class Spreadsheet implements Grid {
 
 		return sheet[row][col];
 	}
-
+	// Returns a string of the board
 	@Override
 	public String getGridText() {
 		String output = "   |";
@@ -125,14 +128,8 @@ public class Spreadsheet implements Grid {
 	}
 
 	// ====[ Private Methods ]===== //
-	private String getTextBetween(String input, char c) {
-		if (input.charAt(0) == c &&
-			input.charAt(input.length() - 1) == c)
-			return input.substring(1, input.length() - 1);
-		return input;
-	}
-
-	private int occurance(String string, char character) {
+	// Gets the amount of characters in a string
+	private int occurrence(String string, char character) {
 		char[] characters = string.toCharArray();
 		int i = 0;
 
@@ -142,7 +139,7 @@ public class Spreadsheet implements Grid {
 
 		return i;
 	}
-
+	// Check if a string can be an integer
 	private boolean isDouble(String number) {
 		double numericNumber = Double.parseDouble(number);
 		// Integer overflow
@@ -150,8 +147,8 @@ public class Spreadsheet implements Grid {
 			return true;
 		return number.contains(".");
 	}
-
-	private boolean isNumeric(String input) {
+	// Check if the String can be numeric
+	private boolean isRealValue(String input) {
 		if (DEBUG) System.out.printf("Checking if %s is Numeric:\n", input);
 		// Check for numeric characters
 		String acceptable = "0123456789.-%";
@@ -162,20 +159,27 @@ public class Spreadsheet implements Grid {
 				return false;
 		if (DEBUG) System.out.println("  * Passed whitelist test!");
 
-		if (input.split(".").length > 2)
+		if (occurrence(input, '.') > 1)
 			return false;
 		if (DEBUG) System.out.println("  * Passed decimal point test!");
 		// Check if there is one negative sign in the front
-		if (occurance(input, '-') == 1 && input.charAt(0) != '-')
+		if (occurrence(input, '-') == 1 && input.charAt(0) != '-')
 			return false;
 		if (DEBUG) System.out.println("  * Passed negative test!");
 		// Check if there is one percent sign at the back
-		if (occurance(input, '%') == 1 && input.charAt(input.length() - 1) != '%')
+		if (occurrence(input, '%') == 1 && input.charAt(input.length() - 1) != '%')
 			return false;
 		if (DEBUG) System.out.println("  * Passed percent test!");
 
 		// Passed all invalid checks --> it's numeric!
 		if (DEBUG) System.out.println(input + " is a real value!\n");
+		return true;
+	}
+	// Checks for numbers
+	private boolean hasOnlyNumbers(String input) {
+		for (char c : input.toCharArray())
+			if (c < '0' || c > '9')
+				return false;
 		return true;
 	}
 }
