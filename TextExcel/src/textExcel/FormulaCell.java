@@ -6,11 +6,13 @@ public class FormulaCell extends RealCell {
     private boolean DEBUG = true;
     private String formula;
     private String log;
+    private Spreadsheet sheet;
 
-    public FormulaCell(String input) {
+    public FormulaCell(Spreadsheet inputSheet, String input) {
         super(0);
         log = compute(input);
         formula = input;
+        sheet = inputSheet;
     }
 
     @Override
@@ -116,9 +118,25 @@ public class FormulaCell extends RealCell {
                 if (index + 1 >= size ||
                     index == 0)
                     return "ERROR: Operator is not surrounded by values or cells.";
+
+                double[] nums = new double[2];
+                String operand = structuredExpression.get(index);
+
+                for (int i = 0; i < 2; i++) {
+                    String num = structuredExpression.get(index -1 + i*2);
+                    if (isRealValue(num))
+                        nums[i] = Double.parseDouble(num);
+                    else if (SpreadsheetLocation.isLocation(num)) {
+                        Cell possibleRealCell = sheet.getCell(new SpreadsheetLocation(num));
+                        if (possibleRealCell instanceof RealCell) {
+                            RealCell confirmedRealCell = (RealCell) possibleRealCell;
+                            nums[i] = confirmedRealCell.getDouble();
+                        }
+                    }
+                }
             }
          }
-        return "0.0";
+        return structuredExpression.get(0);
     }
 
     public static boolean isFormula(String input) {
