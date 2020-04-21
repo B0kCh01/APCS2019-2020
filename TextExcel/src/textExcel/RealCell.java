@@ -1,47 +1,33 @@
+/*======== // Nathan Choi // =========|
+|  Last updated: 4.20.20              |
+|                                     |
+|  About this file:                   |
+|    * APCS 3rd Period                |
+|    * RealCell.java                  |
+|    * Numerical Cell [42, %, ()]     |
+|-------------------------------------*/
 package textExcel;
 
 public class RealCell implements Cell {
-    private double value;
-    private boolean isInt;
+    private String value;
 
+    // Takes doubles or integers
     public RealCell(int input) {
-        isInt = true;
-        value = input;
+        value = input + "";
     }
-
     public RealCell(double input) {
-        isInt = false;
-        value = input;
+        value = input + "";
     }
 
     @Override
     public String abbreviatedCellText() {
-        String output = value + "";
-        int initLength = output.length();
-        if (output.length() < 10)
-            for (int i = 0; i < 10 - initLength; i++)
-                output += " ";
-        return output.substring(0, 10);
+        return (getDouble() + "          ").substring(0, 10);
     }
-
-    public String abbreviatedCellText(String input) {
-        String output = input + "";
-        int initLength = output.length();
-        if (output.length() < 10)
-            for (int i = 0; i < 10 - initLength; i++)
-                output += " ";
-        return output.substring(0, 10);
-    }
-
     @Override
     public String fullCellText() {
-        String output = value + "";
-        if (isInt)
-            return output.substring(0, output.length() - 2);
-        return output;
-    }
-
-    double getDouble() {
         return value;
+    }
+    public double getDouble() {
+        return Double.parseDouble(value);
     }
 }

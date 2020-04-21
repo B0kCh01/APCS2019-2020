@@ -1,199 +1,339 @@
+/*======== // Nathan Choi // =========|
+|  Last updated: 4.20.20              |
+|                                     |
+|  About this file:                   |
+|    * APCS 3rd Period                |
+|    * FormulaCell.java               |
+|    * Processes formula commands     |
+|-------------------------------------*/
 package textExcel;
 
 import java.util.ArrayList;
 
 public class FormulaCell extends RealCell {
-    private boolean DEBUG = true;
     private String formula;
     private String log;
     private Spreadsheet sheet;
 
-    public FormulaCell(Spreadsheet inputSheet, String input) {
+    public FormulaCell(SpreadsheetLocation loc, Spreadsheet inputSheet, String input) {
+        // When extending an object, it is required to call super() before anything else.
         super(0);
-        log = compute(input);
-        formula = input;
+        // Then, we need to keep an instance of the spreadsheet, the formula.
         sheet = inputSheet;
+        formula = input;
+        // Here, we need to compute the value of the formula before to check for errors
+        log = compute(input);
     }
-
     @Override
     public String fullCellText() {
         return formula;
     }
-
-    @Override
-    public String abbreviatedCellText() {
-        return super.abbreviatedCellText(getDouble() + "");
-    }
-
+    // Every time getDouble() is called, formula cell will re-calculate its formula
     @Override
     public double getDouble() {
         return Double.parseDouble(compute(formula));
     }
 
+    //====/ Public Methods /====//
+    // Returns the initial calculation status. (Error checking)
     public String getLog() {
         return log;
     }
-
-    private String compute(String input) {
-        String[][] operands = {{"*", "/"}, {"+", "-"}};
-        String[] commands = {"sum", "avg"};
-
-        String expression = input.substring(1, input.length() - 1);
-        System.out.println("\nExpression: " + expression);
-        ArrayList<String> structuredExpression = new ArrayList<>();
-
-        // Checks for formatting errors (not order)
-        for (int index = 0; index < expression.length();) {
-            boolean stop = false;
-            boolean isUnverified = false;
-            boolean alreadyHasMethod = false;
-            String testString = "";
-
-            while (!stop && index < expression.length()) {
-                String s = expression.charAt(index) + "";
-
-                if (s.equals(" ")) {
-                    if (isUnverified)
-                        return "ERROR: \"" + testString + "\" cannot be used in formula.";
-                }
-                // If c is a possible operand
-                else if (contains(operands, s)) {
-                    if (isUnverified)
-                        return "ERROR: \"" + testString + "\" cannot be used in formula.";
-                    if (contains(operands, expression.charAt(index + 1) + ""))
-                        return "ERROR: Found two operands adjacent.";
-                    testString += s;
-                    stop = true;
-                }
-                // C is a regular term
-                else {
-                    isUnverified = true;
-                    testString += s;
-
-                    if (SpreadsheetLocation.isLocation(testString))
-                        stop = true;
-                    else if (contains(commands, testString))
-                        if (alreadyHasMethod)
-                            return "ERROR: You can only use one method per formula.";
-                        else {
-                            stop = true;
-                            alreadyHasMethod = true;
-                        }
-                    else if (isRealValue(testString))
-                        if (index < expression.length() - 1 &&
-                            !isRealValue(testString + expression.charAt(index + 1)) ||
-                            index == expression.length() - 1) {
-                        stop = true;
-                    }
-                }
-                index++;
-            }
-            structuredExpression.add(testString);
-        }
-        if (DEBUG) System.out.println(structuredExpression.toString());
-
-        for (int index = 0, // Initialize two things: index and size of the list
-             size = structuredExpression.size();
-             index < structuredExpression.size(); // Keep running until index is out of bounds
-             size = structuredExpression.size(), index++) // Update size every iteration and increase index
-        {
-            String item = structuredExpression.get(index);
-
-            if (contains(commands, structuredExpression.get(index))) {
-                if (index + 2 >= size)
-                    return "ERROR: Invalid or missing range; it is " + item + " <cell>-<cell>";
-
-                String start = structuredExpression.get(index + 1);
-                String dash = structuredExpression.get(index + 2);
-                String end = structuredExpression.get(index + 3);
-
-                if (!isRange(start, dash, end))
-                    return "ERROR: The selected range of cells are invalid!";
-                if (!SpreadsheetLocation.isLocation(start) ||
-                    !SpreadsheetLocation.isLocation(end))
-                    return "ERROR: Invalid range; it is " + item + " <cell>-<cell>";
-                return "ERROR: Methods not supported ->" + item;
-            }
-            else if (contains(operands, structuredExpression.get(index))) {
-                if (index + 1 >= size ||
-                    index == 0)
-                    return "ERROR: Operator is not surrounded by values or cells.";
-
-                double[] nums = new double[2];
-                String operand = structuredExpression.get(index);
-
-                for (int i = 0; i < 2; i++) {
-                    String num = structuredExpression.get(index -1 + i*2);
-                    if (isRealValue(num))
-                        nums[i] = Double.parseDouble(num);
-                    else if (SpreadsheetLocation.isLocation(num)) {
-                        Cell possibleRealCell = sheet.getCell(new SpreadsheetLocation(num));
-                        if (possibleRealCell instanceof RealCell) {
-                            RealCell confirmedRealCell = (RealCell) possibleRealCell;
-                            nums[i] = confirmedRealCell.getDouble();
-                        }
-                    }
-                }
-            }
-         }
-        return structuredExpression.get(0);
-    }
-
+    // Returns a boolean value that checks if isFormula is parse-able by compute()
     public static boolean isFormula(String input) {
+        int index = input.lastIndexOf(")");
+        if (index != -1)
+            if (containsOnlySpaces(input.substring(index + 1).split("")))
+                input = input.substring(0, index + 1);
+
         if (input.charAt(0) == '(' && input.charAt(input.length() - 1) == ')')
             return !input.substring(1, input.length() - 1).contains("(") &&
                    !input.substring(1, input.length() - 1).contains(")");
         return false;
     }
 
-    private static boolean contains(String[][] strArray, String s) {
-        for (String[] list : strArray)
-            for (String match : list)
-                if (match.equalsIgnoreCase(s))
-                    return true;
+    //====/ Private Methods /====//
+    // Parses the formula and returns an error or numerical value
+    private String compute(String input) {
+        // 1. raw formula string ~> formatted list
+        String expression = input.substring(1, input.length() - 1);
+        ArrayList<String> structuredExpression = new ArrayList<>();
+        // Checks for formatting errors
+        String exitResult = makeListOfCommandsFromString(structuredExpression, expression);
+        if (!exitResult.equals(":)"))
+            return exitResult;
+
+        // 2. Given a formatted list of commands, calculate the value
+        exitResult = simplify(structuredExpression);
+        // Checks for numerical and method errors
+        if (!exitResult.equals(":)"))
+            return exitResult;
+
+        // 3. Take the first index (the final value) and return it.
+        return structuredExpression.get(0);
+    }
+    // Parses raw formulas and eliminates formatting errors for simplify()
+    private String makeListOfCommandsFromString(ArrayList<String> list, String expression) {
+        boolean alreadyHasMethod = false;
+        boolean fullCommandFound = false;
+        boolean cannotBeOperand = false;
+        boolean previousWasOperand = true;
+        String possibleCommand = "";
+
+        // Loop through every char in the expression
+        for (int index = 0; index < expression.length(); index++) {
+            // Many of the algorithms below utilize the next char in expression
+            char nextChar = (index == expression.length() - 1) ? '!' : expression.charAt(index + 1);
+            char currentChar = expression.charAt(index);
+
+            // If whitespace, ignore, but it still signifies a new command
+            if (currentChar == ' ') {
+                // If the command is unrecognizable & there is whitespace (signals end of a command)
+                if (cannotBeOperand)
+                    return "ERROR: \"" + possibleCommand + "\" cannot be used in formula.";
+            }
+            // If currentChar is a possible operand
+            else if (isOperand(currentChar)) {
+                // If the command is unrecognizable & there is an operand (signals end of a command)
+                if (cannotBeOperand) return "ERROR: \"" + possibleCommand + "\" cannot be used in formula.";
+
+                // Operand is an individual value in the output list if not a negative sign
+                if (!(currentChar == '-' && previousWasOperand)) {
+                    fullCommandFound = true;
+                    previousWasOperand = true;
+                }
+
+                // Give an error if there is an adjacent operand
+                else if (isOperand(nextChar))
+                    return "ERROR: " + currentChar + " is placed where it doesn't make sense.";
+
+                // Passed all checks, currentChar is a valid operand in a valid position
+                possibleCommand += currentChar;
+            }
+            // currentChar is a numeric term
+            else {
+                previousWasOperand = false; // Current value is not an operand (used for next iteration)
+                cannotBeOperand = true; // Current command cannot be an operand
+                possibleCommand += currentChar; // Command now is checked with a currentChar added
+
+                // DEALING WITH CELL LOCATIONS
+                if (SpreadsheetLocation.isLocation(possibleCommand)) {
+                    // If next char completes the location
+                    if (SpreadsheetLocation.isLocation(possibleCommand + nextChar)) {
+                        possibleCommand += nextChar;
+                        index++; // Skip an iteration
+                    }
+                    fullCommandFound = true;
+                }
+                // DEALING WITH METHODS (SUM, AVG)
+                else if (isMethod(possibleCommand)) {
+                    if (alreadyHasMethod) return "ERROR: You can only use one method per formula.";
+                    else {
+                        fullCommandFound = true;
+                        alreadyHasMethod = true;
+                    }
+                }
+                else if (isRealValue(possibleCommand)) {
+                    // If it is safe to check the next char and its not a number
+                    if (!isRealValue(possibleCommand + nextChar)) {
+                        fullCommandFound = true;
+                    }
+                }
+            }
+
+            if (fullCommandFound) {
+                list.add(possibleCommand); // Add the command to the list
+                // Re-initialize some variables
+                possibleCommand = "";
+                fullCommandFound = false;
+                cannotBeOperand = false;
+            }
+        }
+        if (list.size() == 0)
+            return "ERROR: No formula given.";
+        return ":)";
+    }
+    // Takes a correctly-formatted list, finds the value, and returns numerical and method errors.
+    private String simplify(ArrayList<String> list) {
+        // If formula uses a method
+        if (isMethod(list.get(0))) {
+            // Checks list size to avoid out of bounds exceptions
+            if (list.size() != 4)
+                return "ERROR: Methods in formulas must follow -> (<METHOD> <cell>-<cell>)";
+            // Grabs first location and second location
+            String first = list.get(1).toUpperCase();
+            String second = list.get(3).toUpperCase();
+
+            // All methods must be: 0-method, 1-start, 2-"-", 3-end
+            if (!isRange(first, list.get(2), second))
+                return "ERROR: Methods in formulas must follow -> (<METHOD> <cell>-<cell>)";
+
+            // Creating a list of doubles
+            ArrayList<Double> numbers = new ArrayList<>();
+
+            // Define column boundaries and if traveling direction.
+            int colStart = first.charAt(0) - 'A';
+            int colEnd = second.charAt(0) - 'A';
+            int colPropagateDirection = (colEnd - colStart < 0) ? -1 : 1;
+            // Same with rows
+            int rowStart = Integer.parseInt(first.substring(1));
+            int rowEnd = Integer.parseInt(second.substring(1));
+            int rowPropagateDirection = (rowEnd - rowStart < 0) ? -1 : 1;
+
+            // Loop through all rows in each column and stops when index overshoots end by one.
+            for (int col = colStart; col != colEnd + colPropagateDirection; col += colPropagateDirection) {
+                for (int row = rowStart; row != rowEnd + rowPropagateDirection; row += rowPropagateDirection) {
+                    // Construct the location, get value and check for errors
+                    String errorCheck = getValue((char) (col + 'A') + "" + row);
+                    if (errorCheck.startsWith("ERROR"))
+                        return errorCheck;
+                    // Add number to numbers list
+                    numbers.add(Double.parseDouble(errorCheck));
+                }
+            }
+
+            // Store sum of numbers in a variable (avg and sum needs it)
+            double sum = 0;
+            for (double d : numbers) sum += d;
+            // Set first index of the formatted list to sum
+            if (list.get(0).equalsIgnoreCase("sum"))
+                list.set(0, sum + "");
+            // Set first index of the formatted list to mean avg
+            else list.set(0, sum / numbers.size() + "");
+
+            // Everything went A-OK, stop function
+            return ":)";
+        }
+
+        // If formula does not use a method:
+        // If formula only contains one number
+        if (list.size() == 1)
+            list.set(0, getValue(list.get(0)));
+        else {
+            for (int iteration = 0; iteration < 2; iteration++) {
+                // Iteration: 0 (multiply and divide)
+                // Iteration: 1 (add and subtract)
+                for (int index = 0; index < list.size(); index += 2) {
+                    // If the list is big enough for (term operand term)
+                    if (list.size() - index >= 3) {
+                        boolean computed = true;
+                        double[] terms = new double[2]; // Terms to be evaluated
+                        String operand = list.get(index + 1); // Store operand
+
+                        // Get first and third string from list and get its value
+                        for (int i = 0; i < 2; i++) {
+                            // Error checking
+                            String errorCheck = getValue(list.get(index + 2 * i));
+                            if (errorCheck.startsWith("ERROR"))
+                                return errorCheck;
+                            // Add it to one of the terms
+                            terms[i] = Double.parseDouble(errorCheck);
+                        }
+
+                        // Read the operand, and undergo calculations
+                        if (iteration == 0) {
+                            if (operand.equals("*"))
+                                list.set(index, terms[0] * terms[1] + "");
+                            else if (operand.equals("/")) {
+                                // Check if denominator is 0
+                                if (terms[1] == 0) {
+                                    return "ERROR: Cannot divide by 0.";
+                                } else {
+                                    list.set(index, terms[0] / terms[1] + "");
+                                }
+                            } else {
+                                computed = false;
+                            }
+                        }
+                        else {
+                            if (operand.equals("+"))
+                                list.set(index, terms[0] + terms[1] + "");
+                            else if (operand.equals("-"))
+                                list.set(index, terms[0] - terms[1] + "");
+                            else computed = false;
+                        }
+
+                        // Only run below if something was calculated
+                        if (computed) {
+                            // Remove that operand and
+                            list.remove(index + 1);
+                            list.remove(index + 1);
+                            index -= 2;
+                        }
+                    }
+                }
+            }
+        }
+        // Everything went smoothly
+        return ":)";
+    }
+    // Gets the value of the string given. (Value or Cell)
+    private String getValue(String input) {
+        // If input is a number, its already a value
+        if (isRealValue(input)) return input;
+
+        // If negative, keep track of it and remove the sign
+        boolean negative = false;
+        if (input.startsWith("-")) {
+            input = input.substring(1);
+            negative = true;
+        }
+        // Check if its a location
+        if (SpreadsheetLocation.isLocation(input)) {
+            SpreadsheetLocation locationOfInput = new SpreadsheetLocation(input);
+            // Get the cell and check if its a RealCell
+            if (sheet.getCell(locationOfInput) instanceof RealCell) {
+                // Cast to a RealCell and get its value, remembering the negative.
+                RealCell inputCell = (RealCell) sheet.getCell(locationOfInput);
+                return (negative) ? -inputCell.getDouble() + "" : inputCell.getDouble() + "";
+            } else {
+                return "ERROR: " + input + " does not contain a numeric value.";
+            }
+        }
+        // Check if it's a method (which is bad)
+        if (isMethod(input))
+            return "ERROR: Invalid formula!";
+        return "ERROR: " + input + "does not belong here.";
+    }
+    // Check if a character is an operand (+, -, *, /)
+    private static boolean isOperand(char c) {
+        for (char o : new char[]{'+', '-', '*', '/'})
+            if (c == o) return true;
         return false;
     }
-
-    private static boolean contains(String[] strArray, String s) {
-        for (String match : strArray)
-            if (match.equalsIgnoreCase(s))
-                return true;
-        return false;
+    // Check if input is equal to "sum" or "avg"
+    private static boolean isMethod(String s) {
+        return s.equalsIgnoreCase("sum") || s.equalsIgnoreCase("avg");
     }
-
+    // Check if input only contains spaces
+    private static boolean containsOnlySpaces(String[] strArray) {
+        for (String test : strArray)
+            if (!test.equals(" ")) return false;
+        return true;
+    }
+    // Check if string input can be parsed
+    private boolean isRealValue(String input) {
+        // Check for non-numeric characters
+        String acceptable = "0123456789.-";
+        for (char c : input.toCharArray())
+            if (!acceptable.contains(c + "")) return false;
+        // Check if there are too many decimal points
+        if (occurrence(input, '.') > 1) return false;
+        // Check if there is one negative sign in the front
+        return occurrence(input, '-') <= 1 && input.indexOf("-") <= 0;
+    }
+    // Check if start, dash, and end make up a range
+    private boolean isRange(String start, String dash, String end) {
+        return SpreadsheetLocation.isLocation(start) &&
+                SpreadsheetLocation.isLocation(end) &&
+                dash.equals("-");
+    }
+    // Return the amount of time a character appears in a string
     private int occurrence(String string, char character) {
-		char[] characters = string.toCharArray();
 		int i = 0;
-
-		for (char c : characters)
-			if (c == character)
-				i++;
+		for (char c : string.toCharArray())
+			if (c == character) i++;
 		return i;
 	}
-
-    private boolean isRealValue(String input) {
-		// Check for numeric characters
-		String acceptable = "0123456789.-";
-		char[] characters = input.toCharArray();
-
-		for (char c : characters)
-			if (!acceptable.contains(c + ""))
-				return false;
-
-		if (occurrence(input, '.') > 1)
-			return false;
-		// Check if there is one negative sign in the front
-		if (occurrence(input, '-') == 1 && input.charAt(0) != '-')
-			return false;
-
-		// Passed all invalid checks --> it's numeric!
-		return true;
-	}
-
-	private boolean isRange(String start, String dash, String end) {
-        return SpreadsheetLocation.isLocation(start) &&
-               SpreadsheetLocation.isLocation(end) &&
-               dash.equals("-");
-    }
 }
 
